@@ -1,0 +1,9 @@
+server:
+  home: /etc/covid-tracking
+  port: 9090
+  services:
+    storage: ct-production:27017
+    amqp: ct-production-mb:8766
+  tls:
+    cert: /etc/covid-tracking/cert.pem
+    key: /etc/covid-tracking/key.pem

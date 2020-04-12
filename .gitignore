@@ -1,0 +1,26 @@
+# Generals
+.DS_Store
+.idea
+
+# Deps
+vendor/**
+
+# Temporary files
+/tmp
+
+# Packages
+*.zip
+*.tgz
+
+# PKI
+*.crt
+*.csr
+*.cer
+*.pem
+*.key
+!**/testdata/*.cer
+!**/testdata/*.pem
+
+# Artifacts
+/release/**
+covid-tracking*
