@@ -15,6 +15,6 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-func (this *Ping) Validate() error {
+func (this *LocationRecord) Validate() error {
 	return nil
 }

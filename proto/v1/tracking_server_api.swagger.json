@@ -1,0 +1,279 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "proto/v1/tracking_server_api.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/api/activation_code": {
+      "post": {
+        "summary": "Generate a new activation code.",
+        "operationId": "ActivationCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ActivationCodeResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ActivationCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TrackingServerAPI"
+        ]
+      }
+    },
+    "/v1/api/credentials": {
+      "post": {
+        "summary": "Get credentials for an account in the platform.",
+        "operationId": "Credentials",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CredentialsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CredentialsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TrackingServerAPI"
+        ]
+      }
+    },
+    "/v1/api/credentials_renew": {
+      "post": {
+        "summary": "Renew a previously-issued credential.",
+        "operationId": "RenewCredentials",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CredentialsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RenewCredentialsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TrackingServerAPI"
+        ]
+      }
+    },
+    "/v1/api/ping": {
+      "get": {
+        "summary": "Reachability test.",
+        "operationId": "Ping",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PingResponse"
+            }
+          }
+        },
+        "tags": [
+          "TrackingServerAPI"
+        ]
+      }
+    },
+    "/v1/api/record": {
+      "post": {
+        "summary": "Process location record events. A maximum value of 100 record per-request\nis enforced.",
+        "operationId": "Record",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RecordResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RecordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TrackingServerAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "v1ActivationCodeRequest": {
+      "type": "object",
+      "properties": {
+        "did": {
+          "type": "string",
+          "description": "Identifier."
+        },
+        "role": {
+          "type": "string",
+          "description": "Account role."
+        }
+      }
+    },
+    "v1ActivationCodeResponse": {
+      "type": "object",
+      "properties": {
+        "activation_code": {
+          "type": "string",
+          "description": "Activation code generated."
+        }
+      }
+    },
+    "v1CredentialsRequest": {
+      "type": "object",
+      "properties": {
+        "did": {
+          "type": "string",
+          "description": "Identifier."
+        },
+        "role": {
+          "type": "string",
+          "description": "Account role."
+        },
+        "activation_code": {
+          "type": "string",
+          "description": "Activation code previously obtained from the server."
+        },
+        "proof": {
+          "type": "string",
+          "format": "byte",
+          "description": "LD document containing a signed activation code."
+        }
+      }
+    },
+    "v1CredentialsResponse": {
+      "type": "object",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "Bearer credentials in the form of a JWT."
+        },
+        "refresh_code": {
+          "type": "string",
+          "description": "Set if the credential is refreshable. This code can be used\nto obtain a new access token to replace an expired one."
+        }
+      }
+    },
+    "v1LocationRecord": {
+      "type": "object",
+      "properties": {
+        "did": {
+          "type": "string",
+          "description": "User/device identifier."
+        },
+        "lat": {
+          "type": "number",
+          "format": "float",
+          "description": "Latitude."
+        },
+        "lng": {
+          "type": "number",
+          "format": "float",
+          "description": "Longitude."
+        },
+        "alt": {
+          "type": "number",
+          "format": "float",
+          "description": "Altitude (optional)."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "int64",
+          "description": "Timestamp (in seconds and for UTC)."
+        },
+        "hash": {
+          "type": "string",
+          "description": "SHA256( did|lat|lng|alt|timestamp ) in hex format."
+        },
+        "proof": {
+          "type": "string",
+          "format": "byte",
+          "description": "LD document containing a cryptographic proof for the record obtained\nwhen signing its corresponding hash."
+        }
+      },
+      "description": "Represents a unique location entry for a particular user/device."
+    },
+    "v1PingResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "Whether the service is reachable and healthy."
+        }
+      }
+    },
+    "v1RecordRequest": {
+      "type": "object",
+      "properties": {
+        "records": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v1LocationRecord"
+          },
+          "description": "New location records to process."
+        }
+      }
+    },
+    "v1RecordResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "Whether the record(s) request was successfully received\nand handled."
+        }
+      }
+    },
+    "v1RenewCredentialsRequest": {
+      "type": "object",
+      "properties": {
+        "refresh_code": {
+          "type": "string",
+          "description": "Obtained when initially requesting the credential if it is renewable."
+        }
+      }
+    }
+  }
+}

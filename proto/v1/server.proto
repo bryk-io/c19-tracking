@@ -23,7 +23,21 @@ option php_namespace = "Bryk\\Covid\\Proto\\V1";
 
 import "github.com/gogo/protobuf/gogoproto/gogo.proto";
 
-// Reachability test response.
-message Ping {
-  bool ok = 1;
+// Represents a unique location entry for a particular user/device.
+message LocationRecord {
+  // User/device identifier.
+  string did = 1;
+  // Latitude.
+  float lat = 2;
+  // Longitude.
+  float lng = 3;
+  // Altitude (optional).
+  float alt = 4;
+  // Timestamp (in seconds and for UTC).
+  int64 timestamp = 5;
+  // SHA256( did|lat|lng|alt|timestamp ) in hex format.
+  string hash = 6;
+  // LD document containing a cryptographic proof for the record obtained
+  // when signing its corresponding hash.
+  bytes proof = 7;
 }

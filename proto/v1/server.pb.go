@@ -5,6 +5,7 @@ package protov1
 
 import (
 	bytes "bytes"
+	encoding_binary "encoding/binary"
 	fmt "fmt"
 	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/gogo/protobuf/proto"
@@ -26,25 +27,39 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// Reachability test response.
-type Ping struct {
-	Ok                   bool     `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
+// Represents a unique location entry for a particular user/device.
+type LocationRecord struct {
+	// User/device identifier.
+	Did string `protobuf:"bytes,1,opt,name=did,proto3" json:"did,omitempty"`
+	// Latitude.
+	Lat float32 `protobuf:"fixed32,2,opt,name=lat,proto3" json:"lat,omitempty"`
+	// Longitude.
+	Lng float32 `protobuf:"fixed32,3,opt,name=lng,proto3" json:"lng,omitempty"`
+	// Altitude (optional).
+	Alt float32 `protobuf:"fixed32,4,opt,name=alt,proto3" json:"alt,omitempty"`
+	// Timestamp (in seconds and for UTC).
+	Timestamp int64 `protobuf:"varint,5,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	// SHA256( did|lat|lng|alt|timestamp ) in hex format.
+	Hash string `protobuf:"bytes,6,opt,name=hash,proto3" json:"hash,omitempty"`
+	// LD document containing a cryptographic proof for the record obtained
+	// when signing its corresponding hash.
+	Proof                []byte   `protobuf:"bytes,7,opt,name=proof,proto3" json:"proof,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Ping) Reset()      { *m = Ping{} }
-func (*Ping) ProtoMessage() {}
-func (*Ping) Descriptor() ([]byte, []int) {
+func (m *LocationRecord) Reset()      { *m = LocationRecord{} }
+func (*LocationRecord) ProtoMessage() {}
+func (*LocationRecord) Descriptor() ([]byte, []int) {
 	return fileDescriptor_84c2b3ce2e73d961, []int{0}
 }
-func (m *Ping) XXX_Unmarshal(b []byte) error {
+func (m *LocationRecord) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *Ping) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *LocationRecord) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_Ping.Marshal(b, m, deterministic)
+		return xxx_messageInfo_LocationRecord.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -54,51 +69,98 @@ func (m *Ping) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
-func (m *Ping) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Ping.Merge(m, src)
+func (m *LocationRecord) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LocationRecord.Merge(m, src)
 }
-func (m *Ping) XXX_Size() int {
+func (m *LocationRecord) XXX_Size() int {
 	return m.Size()
 }
-func (m *Ping) XXX_DiscardUnknown() {
-	xxx_messageInfo_Ping.DiscardUnknown(m)
+func (m *LocationRecord) XXX_DiscardUnknown() {
+	xxx_messageInfo_LocationRecord.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Ping proto.InternalMessageInfo
+var xxx_messageInfo_LocationRecord proto.InternalMessageInfo
 
-func (m *Ping) GetOk() bool {
+func (m *LocationRecord) GetDid() string {
 	if m != nil {
-		return m.Ok
+		return m.Did
 	}
-	return false
+	return ""
+}
+
+func (m *LocationRecord) GetLat() float32 {
+	if m != nil {
+		return m.Lat
+	}
+	return 0
+}
+
+func (m *LocationRecord) GetLng() float32 {
+	if m != nil {
+		return m.Lng
+	}
+	return 0
+}
+
+func (m *LocationRecord) GetAlt() float32 {
+	if m != nil {
+		return m.Alt
+	}
+	return 0
+}
+
+func (m *LocationRecord) GetTimestamp() int64 {
+	if m != nil {
+		return m.Timestamp
+	}
+	return 0
+}
+
+func (m *LocationRecord) GetHash() string {
+	if m != nil {
+		return m.Hash
+	}
+	return ""
+}
+
+func (m *LocationRecord) GetProof() []byte {
+	if m != nil {
+		return m.Proof
+	}
+	return nil
 }
 
 func init() {
-	proto.RegisterType((*Ping)(nil), "bryk.covid.proto.v1.Ping")
+	proto.RegisterType((*LocationRecord)(nil), "bryk.covid.proto.v1.LocationRecord")
 }
 
 func init() { proto.RegisterFile("proto/v1/server.proto", fileDescriptor_84c2b3ce2e73d961) }
 
 var fileDescriptor_84c2b3ce2e73d961 = []byte{
-	// 225 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2d, 0x28, 0xca, 0x2f,
-	0xc9, 0xd7, 0x2f, 0x33, 0xd4, 0x2f, 0x4e, 0x2d, 0x2a, 0x4b, 0x2d, 0xd2, 0x03, 0xf3, 0x85, 0x84,
-	0x93, 0x8a, 0x2a, 0xb3, 0xf5, 0x92, 0xf3, 0xcb, 0x32, 0x53, 0x20, 0x22, 0x7a, 0x65, 0x86, 0x52,
-	0xba, 0xe9, 0x99, 0x25, 0x19, 0xa5, 0x49, 0x7a, 0xc9, 0xf9, 0xb9, 0xfa, 0xe9, 0xf9, 0xe9, 0xf9,
-	0xfa, 0x60, 0x99, 0xa4, 0xd2, 0x34, 0x30, 0x0f, 0x62, 0x10, 0x88, 0x05, 0xd1, 0xa1, 0x24, 0xc6,
-	0xc5, 0x12, 0x90, 0x99, 0x97, 0x2e, 0xc4, 0xc7, 0xc5, 0x94, 0x9f, 0x2d, 0xc1, 0xa8, 0xc0, 0xa8,
-	0xc1, 0x11, 0xc4, 0x94, 0x9f, 0xed, 0xd4, 0xc7, 0x78, 0xe3, 0xa1, 0x1c, 0xc3, 0x83, 0x87, 0x72,
-	0x8c, 0x1f, 0x1e, 0xca, 0x31, 0xfe, 0x78, 0x28, 0xc7, 0xd8, 0xf0, 0x48, 0x8e, 0x71, 0xc5, 0x23,
-	0x39, 0xc6, 0x1d, 0x8f, 0xe4, 0x18, 0x0f, 0x3c, 0x92, 0x63, 0x3c, 0xf1, 0x48, 0x8e, 0xf1, 0xc2,
-	0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0xb9, 0xc4, 0x32, 0xf3, 0xf5, 0xb0, 0xb8, 0xc6, 0x89,
-	0x3b, 0x18, 0xec, 0xe0, 0x00, 0x10, 0x3f, 0x80, 0x31, 0x8a, 0x1d, 0x2c, 0x51, 0x66, 0xb8, 0x88,
-	0x89, 0xd9, 0xc9, 0x39, 0x60, 0x15, 0x93, 0xb0, 0x13, 0x48, 0x8f, 0x33, 0x58, 0x0f, 0x58, 0x8d,
-	0x5e, 0x98, 0xe1, 0x29, 0x88, 0x68, 0x0c, 0x58, 0x34, 0x06, 0x2c, 0x1a, 0x13, 0x66, 0x98, 0xc4,
-	0x06, 0xd6, 0x6a, 0x0c, 0x08, 0x00, 0x00, 0xff, 0xff, 0x1c, 0x2b, 0x4a, 0x38, 0x0c, 0x01, 0x00,
-	0x00,
+	// 318 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0xbd, 0x4a, 0xc3, 0x50,
+	0x14, 0xc7, 0x3d, 0x49, 0x3f, 0xe8, 0x55, 0x44, 0x52, 0x95, 0x8b, 0xc8, 0x25, 0x38, 0x65, 0x31,
+	0x21, 0xf8, 0x06, 0xe9, 0xea, 0x50, 0x22, 0x74, 0x90, 0x2e, 0xf9, 0x6a, 0x1a, 0x6c, 0x7b, 0x4a,
+	0x72, 0x1b, 0x70, 0xf3, 0x09, 0x7c, 0x06, 0x71, 0x12, 0x9f, 0xc0, 0xd1, 0x51, 0x9c, 0x1c, 0x1d,
+	0x9b, 0xfb, 0x04, 0x8e, 0x8e, 0x72, 0x4f, 0x04, 0x17, 0xb7, 0xff, 0xff, 0x77, 0xee, 0xef, 0x1e,
+	0x38, 0xec, 0x68, 0x5d, 0xa2, 0x44, 0xaf, 0xf6, 0xbd, 0x2a, 0x2b, 0xeb, 0xac, 0x74, 0xa9, 0x5b,
+	0xc3, 0xb8, 0xbc, 0xbd, 0x71, 0x13, 0xac, 0x8b, 0xb4, 0x25, 0x6e, 0xed, 0x9f, 0x9c, 0xe7, 0x85,
+	0x9c, 0x6f, 0x62, 0x37, 0xc1, 0xa5, 0x97, 0x63, 0x8e, 0x1e, 0x4d, 0xe2, 0xcd, 0x8c, 0x5a, 0xfb,
+	0x91, 0x4e, 0xad, 0x71, 0xf6, 0x00, 0x6c, 0xff, 0x12, 0x93, 0x48, 0x16, 0xb8, 0x0a, 0xb3, 0x04,
+	0xcb, 0xd4, 0x3a, 0x60, 0x66, 0x5a, 0xa4, 0x1c, 0x6c, 0x70, 0x06, 0xa1, 0x8e, 0x9a, 0x2c, 0x22,
+	0xc9, 0x0d, 0x1b, 0x1c, 0x23, 0xd4, 0x91, 0xc8, 0x2a, 0xe7, 0xe6, 0x2f, 0x59, 0xe5, 0x9a, 0x44,
+	0x0b, 0xc9, 0x3b, 0x2d, 0x89, 0x16, 0xd2, 0x3a, 0x65, 0x03, 0x59, 0x2c, 0xb3, 0x4a, 0x46, 0xcb,
+	0x35, 0xef, 0xda, 0xe0, 0x98, 0xe1, 0x1f, 0xb0, 0x2c, 0xd6, 0x99, 0x47, 0xd5, 0x9c, 0xf7, 0x68,
+	0x0d, 0x65, 0xeb, 0x90, 0x75, 0xd7, 0x25, 0xe2, 0x8c, 0xf7, 0x6d, 0x70, 0xf6, 0xc2, 0xb6, 0x04,
+	0xf7, 0xf0, 0xd9, 0x88, 0x9d, 0x6d, 0x23, 0xe0, 0xab, 0x11, 0xf0, 0xdd, 0x08, 0xb8, 0x53, 0x02,
+	0x9e, 0x94, 0x80, 0x17, 0x25, 0xe0, 0x55, 0x09, 0x78, 0x53, 0x02, 0x3e, 0x94, 0x80, 0xad, 0x12,
+	0xc0, 0x8e, 0x0b, 0x74, 0xff, 0x39, 0x4c, 0xb0, 0x7b, 0x45, 0xb7, 0x1b, 0xeb, 0x3e, 0x86, 0xeb,
+	0x3e, 0x0d, 0x6a, 0xff, 0xd1, 0x30, 0x83, 0xd1, 0xf8, 0xd9, 0x18, 0x06, 0xda, 0x19, 0x91, 0x43,
+	0x6f, 0xdc, 0x89, 0xff, 0xde, 0xd2, 0x29, 0xd1, 0x29, 0xd1, 0xe9, 0xc4, 0x8f, 0x7b, 0xa4, 0x5e,
+	0xfc, 0x04, 0x00, 0x00, 0xff, 0xff, 0xf3, 0x82, 0xa4, 0xc1, 0x97, 0x01, 0x00, 0x00,
 }
 
-func (this *Ping) VerboseEqual(that interface{}) error {
+func (this *LocationRecord) VerboseEqual(that interface{}) error {
 	if that == nil {
 		if this == nil {
 			return nil
@@ -106,39 +168,57 @@ func (this *Ping) VerboseEqual(that interface{}) error {
 		return fmt.Errorf("that == nil && this != nil")
 	}
 
-	that1, ok := that.(*Ping)
+	that1, ok := that.(*LocationRecord)
 	if !ok {
-		that2, ok := that.(Ping)
+		that2, ok := that.(LocationRecord)
 		if ok {
 			that1 = &that2
 		} else {
-			return fmt.Errorf("that is not of type *Ping")
+			return fmt.Errorf("that is not of type *LocationRecord")
 		}
 	}
 	if that1 == nil {
 		if this == nil {
 			return nil
 		}
-		return fmt.Errorf("that is type *Ping but is nil && this != nil")
+		return fmt.Errorf("that is type *LocationRecord but is nil && this != nil")
 	} else if this == nil {
-		return fmt.Errorf("that is type *Ping but is not nil && this == nil")
+		return fmt.Errorf("that is type *LocationRecord but is not nil && this == nil")
 	}
-	if this.Ok != that1.Ok {
-		return fmt.Errorf("Ok this(%v) Not Equal that(%v)", this.Ok, that1.Ok)
+	if this.Did != that1.Did {
+		return fmt.Errorf("Did this(%v) Not Equal that(%v)", this.Did, that1.Did)
+	}
+	if this.Lat != that1.Lat {
+		return fmt.Errorf("Lat this(%v) Not Equal that(%v)", this.Lat, that1.Lat)
+	}
+	if this.Lng != that1.Lng {
+		return fmt.Errorf("Lng this(%v) Not Equal that(%v)", this.Lng, that1.Lng)
+	}
+	if this.Alt != that1.Alt {
+		return fmt.Errorf("Alt this(%v) Not Equal that(%v)", this.Alt, that1.Alt)
+	}
+	if this.Timestamp != that1.Timestamp {
+		return fmt.Errorf("Timestamp this(%v) Not Equal that(%v)", this.Timestamp, that1.Timestamp)
+	}
+	if this.Hash != that1.Hash {
+		return fmt.Errorf("Hash this(%v) Not Equal that(%v)", this.Hash, that1.Hash)
+	}
+	if !bytes.Equal(this.Proof, that1.Proof) {
+		return fmt.Errorf("Proof this(%v) Not Equal that(%v)", this.Proof, that1.Proof)
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
 		return fmt.Errorf("XXX_unrecognized this(%v) Not Equal that(%v)", this.XXX_unrecognized, that1.XXX_unrecognized)
 	}
 	return nil
 }
-func (this *Ping) Equal(that interface{}) bool {
+func (this *LocationRecord) Equal(that interface{}) bool {
 	if that == nil {
 		return this == nil
 	}
 
-	that1, ok := that.(*Ping)
+	that1, ok := that.(*LocationRecord)
 	if !ok {
-		that2, ok := that.(Ping)
+		that2, ok := that.(LocationRecord)
 		if ok {
 			that1 = &that2
 		} else {
@@ -150,7 +230,25 @@ func (this *Ping) Equal(that interface{}) bool {
 	} else if this == nil {
 		return false
 	}
-	if this.Ok != that1.Ok {
+	if this.Did != that1.Did {
+		return false
+	}
+	if this.Lat != that1.Lat {
+		return false
+	}
+	if this.Lng != that1.Lng {
+		return false
+	}
+	if this.Alt != that1.Alt {
+		return false
+	}
+	if this.Timestamp != that1.Timestamp {
+		return false
+	}
+	if this.Hash != that1.Hash {
+		return false
+	}
+	if !bytes.Equal(this.Proof, that1.Proof) {
 		return false
 	}
 	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
@@ -158,13 +256,19 @@ func (this *Ping) Equal(that interface{}) bool {
 	}
 	return true
 }
-func (this *Ping) GoString() string {
+func (this *LocationRecord) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 5)
-	s = append(s, "&protov1.Ping{")
-	s = append(s, "Ok: "+fmt.Sprintf("%#v", this.Ok)+",\n")
+	s := make([]string, 0, 11)
+	s = append(s, "&protov1.LocationRecord{")
+	s = append(s, "Did: "+fmt.Sprintf("%#v", this.Did)+",\n")
+	s = append(s, "Lat: "+fmt.Sprintf("%#v", this.Lat)+",\n")
+	s = append(s, "Lng: "+fmt.Sprintf("%#v", this.Lng)+",\n")
+	s = append(s, "Alt: "+fmt.Sprintf("%#v", this.Alt)+",\n")
+	s = append(s, "Timestamp: "+fmt.Sprintf("%#v", this.Timestamp)+",\n")
+	s = append(s, "Hash: "+fmt.Sprintf("%#v", this.Hash)+",\n")
+	s = append(s, "Proof: "+fmt.Sprintf("%#v", this.Proof)+",\n")
 	if this.XXX_unrecognized != nil {
 		s = append(s, "XXX_unrecognized:"+fmt.Sprintf("%#v", this.XXX_unrecognized)+",\n")
 	}
@@ -179,7 +283,7 @@ func valueToGoStringServer(v interface{}, typ string) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("func(v %v) *%v { return &v } ( %#v )", typ, typ, pv)
 }
-func (m *Ping) Marshal() (dAtA []byte, err error) {
+func (m *LocationRecord) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -189,12 +293,12 @@ func (m *Ping) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *Ping) MarshalTo(dAtA []byte) (int, error) {
+func (m *LocationRecord) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *Ping) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *LocationRecord) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -203,15 +307,49 @@ func (m *Ping) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 		i -= len(m.XXX_unrecognized)
 		copy(dAtA[i:], m.XXX_unrecognized)
 	}
-	if m.Ok {
+	if len(m.Proof) > 0 {
+		i -= len(m.Proof)
+		copy(dAtA[i:], m.Proof)
+		i = encodeVarintServer(dAtA, i, uint64(len(m.Proof)))
 		i--
-		if m.Ok {
-			dAtA[i] = 1
-		} else {
-			dAtA[i] = 0
-		}
+		dAtA[i] = 0x3a
+	}
+	if len(m.Hash) > 0 {
+		i -= len(m.Hash)
+		copy(dAtA[i:], m.Hash)
+		i = encodeVarintServer(dAtA, i, uint64(len(m.Hash)))
 		i--
-		dAtA[i] = 0x8
+		dAtA[i] = 0x32
+	}
+	if m.Timestamp != 0 {
+		i = encodeVarintServer(dAtA, i, uint64(m.Timestamp))
+		i--
+		dAtA[i] = 0x28
+	}
+	if m.Alt != 0 {
+		i -= 4
+		encoding_binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.Alt))))
+		i--
+		dAtA[i] = 0x25
+	}
+	if m.Lng != 0 {
+		i -= 4
+		encoding_binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.Lng))))
+		i--
+		dAtA[i] = 0x1d
+	}
+	if m.Lat != 0 {
+		i -= 4
+		encoding_binary.LittleEndian.PutUint32(dAtA[i:], uint32(math.Float32bits(float32(m.Lat))))
+		i--
+		dAtA[i] = 0x15
+	}
+	if len(m.Did) > 0 {
+		i -= len(m.Did)
+		copy(dAtA[i:], m.Did)
+		i = encodeVarintServer(dAtA, i, uint64(len(m.Did)))
+		i--
+		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
@@ -227,11 +365,33 @@ func encodeVarintServer(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return base
 }
-func NewPopulatedPing(r randyServer, easy bool) *Ping {
-	this := &Ping{}
-	this.Ok = bool(bool(r.Intn(2) == 0))
+func NewPopulatedLocationRecord(r randyServer, easy bool) *LocationRecord {
+	this := &LocationRecord{}
+	this.Did = string(randStringServer(r))
+	this.Lat = float32(r.Float32())
+	if r.Intn(2) == 0 {
+		this.Lat *= -1
+	}
+	this.Lng = float32(r.Float32())
+	if r.Intn(2) == 0 {
+		this.Lng *= -1
+	}
+	this.Alt = float32(r.Float32())
+	if r.Intn(2) == 0 {
+		this.Alt *= -1
+	}
+	this.Timestamp = int64(r.Int63())
+	if r.Intn(2) == 0 {
+		this.Timestamp *= -1
+	}
+	this.Hash = string(randStringServer(r))
+	v1 := r.Intn(100)
+	this.Proof = make([]byte, v1)
+	for i := 0; i < v1; i++ {
+		this.Proof[i] = byte(r.Intn(256))
+	}
 	if !easy && r.Intn(10) != 0 {
-		this.XXX_unrecognized = randUnrecognizedServer(r, 2)
+		this.XXX_unrecognized = randUnrecognizedServer(r, 8)
 	}
 	return this
 }
@@ -255,9 +415,9 @@ func randUTF8RuneServer(r randyServer) rune {
 	return rune(ru + 61)
 }
 func randStringServer(r randyServer) string {
-	v1 := r.Intn(100)
-	tmps := make([]rune, v1)
-	for i := 0; i < v1; i++ {
+	v2 := r.Intn(100)
+	tmps := make([]rune, v2)
+	for i := 0; i < v2; i++ {
 		tmps[i] = randUTF8RuneServer(r)
 	}
 	return string(tmps)
@@ -279,11 +439,11 @@ func randFieldServer(dAtA []byte, r randyServer, fieldNumber int, wire int) []by
 	switch wire {
 	case 0:
 		dAtA = encodeVarintPopulateServer(dAtA, uint64(key))
-		v2 := r.Int63()
+		v3 := r.Int63()
 		if r.Intn(2) == 0 {
-			v2 *= -1
+			v3 *= -1
 		}
-		dAtA = encodeVarintPopulateServer(dAtA, uint64(v2))
+		dAtA = encodeVarintPopulateServer(dAtA, uint64(v3))
 	case 1:
 		dAtA = encodeVarintPopulateServer(dAtA, uint64(key))
 		dAtA = append(dAtA, byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)), byte(r.Intn(256)))
@@ -308,14 +468,35 @@ func encodeVarintPopulateServer(dAtA []byte, v uint64) []byte {
 	dAtA = append(dAtA, uint8(v))
 	return dAtA
 }
-func (m *Ping) Size() (n int) {
+func (m *LocationRecord) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	if m.Ok {
-		n += 2
+	l = len(m.Did)
+	if l > 0 {
+		n += 1 + l + sovServer(uint64(l))
+	}
+	if m.Lat != 0 {
+		n += 5
+	}
+	if m.Lng != 0 {
+		n += 5
+	}
+	if m.Alt != 0 {
+		n += 5
+	}
+	if m.Timestamp != 0 {
+		n += 1 + sovServer(uint64(m.Timestamp))
+	}
+	l = len(m.Hash)
+	if l > 0 {
+		n += 1 + l + sovServer(uint64(l))
+	}
+	l = len(m.Proof)
+	if l > 0 {
+		n += 1 + l + sovServer(uint64(l))
 	}
 	if m.XXX_unrecognized != nil {
 		n += len(m.XXX_unrecognized)
@@ -329,12 +510,18 @@ func sovServer(x uint64) (n int) {
 func sozServer(x uint64) (n int) {
 	return sovServer(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
-func (this *Ping) String() string {
+func (this *LocationRecord) String() string {
 	if this == nil {
 		return "nil"
 	}
-	s := strings.Join([]string{`&Ping{`,
-		`Ok:` + fmt.Sprintf("%v", this.Ok) + `,`,
+	s := strings.Join([]string{`&LocationRecord{`,
+		`Did:` + fmt.Sprintf("%v", this.Did) + `,`,
+		`Lat:` + fmt.Sprintf("%v", this.Lat) + `,`,
+		`Lng:` + fmt.Sprintf("%v", this.Lng) + `,`,
+		`Alt:` + fmt.Sprintf("%v", this.Alt) + `,`,
+		`Timestamp:` + fmt.Sprintf("%v", this.Timestamp) + `,`,
+		`Hash:` + fmt.Sprintf("%v", this.Hash) + `,`,
+		`Proof:` + fmt.Sprintf("%v", this.Proof) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -348,7 +535,7 @@ func valueToStringServer(v interface{}) string {
 	pv := reflect.Indirect(rv).Interface()
 	return fmt.Sprintf("*%v", pv)
 }
-func (m *Ping) Unmarshal(dAtA []byte) error {
+func (m *LocationRecord) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -371,17 +558,17 @@ func (m *Ping) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: Ping: wiretype end group for non-group")
+			return fmt.Errorf("proto: LocationRecord: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: Ping: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: LocationRecord: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Ok", wireType)
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Did", wireType)
 			}
-			var v int
+			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowServer
@@ -391,12 +578,142 @@ func (m *Ping) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				v |= int(b&0x7F) << shift
+				stringLen |= uint64(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-			m.Ok = bool(v != 0)
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Did = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 5 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Lat", wireType)
+			}
+			var v uint32
+			if (iNdEx + 4) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint32(encoding_binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+			iNdEx += 4
+			m.Lat = float32(math.Float32frombits(v))
+		case 3:
+			if wireType != 5 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Lng", wireType)
+			}
+			var v uint32
+			if (iNdEx + 4) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint32(encoding_binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+			iNdEx += 4
+			m.Lng = float32(math.Float32frombits(v))
+		case 4:
+			if wireType != 5 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Alt", wireType)
+			}
+			var v uint32
+			if (iNdEx + 4) > l {
+				return io.ErrUnexpectedEOF
+			}
+			v = uint32(encoding_binary.LittleEndian.Uint32(dAtA[iNdEx:]))
+			iNdEx += 4
+			m.Alt = float32(math.Float32frombits(v))
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
+			}
+			m.Timestamp = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Timestamp |= int64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Hash", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Hash = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Proof", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowServer
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthServer
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex < 0 {
+				return ErrInvalidLengthServer
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Proof = append(m.Proof[:0], dAtA[iNdEx:postIndex]...)
+			if m.Proof == nil {
+				m.Proof = []byte{}
+			}
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipServer(dAtA[iNdEx:])

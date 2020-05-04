@@ -1,9 +1,21 @@
 server:
-  home: /etc/covid-tracking
+  name: sample-ct19.bryk.io
+  home: tmp
   port: 9090
-  services:
-    storage: ct-production:27017
-    amqp: ct-production-mb:8766
-  tls:
-    cert: /etc/covid-tracking/cert.pem
-    key: /etc/covid-tracking/key.pem
+  storage: mongodb://localhost:27017
+  broker: amqp://guest:guest@localhost:5672
+worker:
+  broker: amqp://guest:guest@localhost:5672
+resolver:
+  - method: ccp
+    endpoint: https://did.baidu.com/v1/did/resolve/{{.DID}}
+    protocol: http
+  - method: stack
+    endpoint: https://core.blockstack.org/v1/dids/{{.DID}}
+    protocol: http
+  - method: bryk
+    endpoint: https://did.bryk.io/v1/retrieve/{{.Method}}/{{.Subject}}
+    protocol: http
+  - method: iadb
+    endpoint: https://did.bryk.io/v1/retrieve/{{.Method}}/{{.Subject}}
+    protocol: http

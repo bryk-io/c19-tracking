@@ -7,7 +7,7 @@ LABEL version=${VERSION}
 
 # Expose required ports and volumes
 EXPOSE 9090
-VOLUME /data
+VOLUME /etc/covid-tracking
 
 # Add application binary and use it as default entrypoint
 COPY covid-tracking_linux_amd64 /bin/covid-tracking

@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package bryk.covid.proto.v1;
+
+option (gogoproto.benchgen_all) = true;
+option (gogoproto.equal_all) = true;
+option (gogoproto.goproto_stringer_all) = false;
+option (gogoproto.gostring_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.populate_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.stringer_all) = true;
+option (gogoproto.testgen_all) = true;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.verbose_equal_all) = true;
+option csharp_namespace = "Bryk.Covid.Proto.V1";
+option go_package = "protov1";
+option java_multiple_files = true;
+option java_outer_classname = "TrackingServerApiProto";
+option java_package = "io.bryk.covid.proto.v1";
+option objc_class_prefix = "BCP";
+option php_namespace = "Bryk\\Covid\\Proto\\V1";
+
+import "github.com/gogo/googleapis/google/api/annotations.proto";
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+import "google/protobuf/empty.proto";
+import "proto/v1/server.proto";
+
+// Tracking server RPC interface.
+service TrackingServerAPI {
+  // Reachability test.
+  rpc Ping(google.protobuf.Empty) returns (PingResponse) {
+    option (google.api.http) = {
+      get: "/v1/api/ping"
+    };
+  }
+  // Generate a new activation code.
+  rpc ActivationCode(ActivationCodeRequest) returns (ActivationCodeResponse) {
+    option (google.api.http) = {
+      post: "/v1/api/activation_code"
+      body: "*"
+    };
+  }
+  // Get credentials for an account in the platform.
+  rpc Credentials(CredentialsRequest) returns (CredentialsResponse) {
+    option (google.api.http) = {
+      post: "/v1/api/credentials"
+      body: "*"
+    };
+  }
+  // Renew a previously-issued credential.
+  rpc RenewCredentials(RenewCredentialsRequest) returns (CredentialsResponse) {
+    option (google.api.http) = {
+      post: "/v1/api/credentials_renew"
+      body: "*"
+    };
+  }
+  // Process location record events. A maximum value of 100 record per-request
+  // is enforced.
+  rpc Record(RecordRequest) returns (RecordResponse) {
+    option (google.api.http) = {
+      post: "/v1/api/record"
+      body: "*"
+    };
+  }
+}
+
+message PingResponse {
+  // Whether the service is reachable and healthy.
+  bool ok = 1;
+}
+
+message ActivationCodeRequest {
+  // Identifier.
+  string did = 1;
+  // Account role.
+  string role = 2;
+}
+
+message ActivationCodeResponse {
+  // Activation code generated.
+  string activation_code = 1;
+}
+
+message CredentialsRequest {
+  // Identifier.
+  string did = 1;
+  // Account role.
+  string role = 2;
+  // Activation code previously obtained from the server.
+  string activation_code = 3;
+  // LD document containing a signed activation code.
+  bytes proof = 4;
+}
+
+message RenewCredentialsRequest {
+  // Obtained when initially requesting the credential if it is renewable.
+  string refresh_code = 1;
+}
+
+message CredentialsResponse {
+  // Bearer credentials in the form of a JWT.
+  string access_token = 1;
+  // Set if the credential is refreshable. This code can be used
+  // to obtain a new access token to replace an expired one.
+  string refresh_code = 2;
+}
+
+message RecordRequest {
+  // New location records to process.
+  repeated LocationRecord records = 1;
+}
+
+message RecordResponse {
+  // Whether the record(s) request was successfully received
+  // and handled.
+  bool ok = 1;
+}

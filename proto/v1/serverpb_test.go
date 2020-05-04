@@ -21,15 +21,15 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
-func TestPingProto(t *testing.T) {
+func TestLocationRecordProto(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedPing(popr, false)
+	p := NewPopulatedLocationRecord(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -55,10 +55,10 @@ func TestPingProto(t *testing.T) {
 	}
 }
 
-func TestPingMarshalTo(t *testing.T) {
+func TestLocationRecordMarshalTo(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedPing(popr, false)
+	p := NewPopulatedLocationRecord(popr, false)
 	size := p.Size()
 	dAtA := make([]byte, size)
 	for i := range dAtA {
@@ -68,7 +68,7 @@ func TestPingMarshalTo(t *testing.T) {
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -83,12 +83,12 @@ func TestPingMarshalTo(t *testing.T) {
 	}
 }
 
-func BenchmarkPingProtoMarshal(b *testing.B) {
+func BenchmarkLocationRecordProtoMarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*Ping, 10000)
+	pops := make([]*LocationRecord, 10000)
 	for i := 0; i < 10000; i++ {
-		pops[i] = NewPopulatedPing(popr, false)
+		pops[i] = NewPopulatedLocationRecord(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -101,18 +101,18 @@ func BenchmarkPingProtoMarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func BenchmarkPingProtoUnmarshal(b *testing.B) {
+func BenchmarkLocationRecordProtoUnmarshal(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
 	datas := make([][]byte, 10000)
 	for i := 0; i < 10000; i++ {
-		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedPing(popr, false))
+		dAtA, err := github_com_gogo_protobuf_proto.Marshal(NewPopulatedLocationRecord(popr, false))
 		if err != nil {
 			panic(err)
 		}
 		datas[i] = dAtA
 	}
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		total += len(datas[i%10000])
@@ -123,16 +123,16 @@ func BenchmarkPingProtoUnmarshal(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestPingJSON(t *testing.T) {
+func TestLocationRecordJSON(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedPing(popr, true)
+	p := NewPopulatedLocationRecord(popr, true)
 	marshaler := github_com_gogo_protobuf_jsonpb.Marshaler{}
 	jsondata, err := marshaler.MarshalToString(p)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	err = github_com_gogo_protobuf_jsonpb.UnmarshalString(jsondata, msg)
 	if err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
@@ -144,12 +144,12 @@ func TestPingJSON(t *testing.T) {
 		t.Fatalf("seed = %d, %#v !Json Equal %#v", seed, msg, p)
 	}
 }
-func TestPingProtoText(t *testing.T) {
+func TestLocationRecordProtoText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedPing(popr, true)
+	p := NewPopulatedLocationRecord(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.MarshalTextString(p)
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -161,12 +161,12 @@ func TestPingProtoText(t *testing.T) {
 	}
 }
 
-func TestPingProtoCompactText(t *testing.T) {
+func TestLocationRecordProtoCompactText(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedPing(popr, true)
+	p := NewPopulatedLocationRecord(popr, true)
 	dAtA := github_com_gogo_protobuf_proto.CompactTextString(p)
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	if err := github_com_gogo_protobuf_proto.UnmarshalText(dAtA, msg); err != nil {
 		t.Fatalf("seed = %d, err = %v", seed, err)
 	}
@@ -178,14 +178,14 @@ func TestPingProtoCompactText(t *testing.T) {
 	}
 }
 
-func TestPingVerboseEqual(t *testing.T) {
+func TestLocationRecordVerboseEqual(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedPing(popr, false)
+	p := NewPopulatedLocationRecord(popr, false)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
 		panic(err)
 	}
-	msg := &Ping{}
+	msg := &LocationRecord{}
 	if err := github_com_gogo_protobuf_proto.Unmarshal(dAtA, msg); err != nil {
 		panic(err)
 	}
@@ -193,9 +193,9 @@ func TestPingVerboseEqual(t *testing.T) {
 		t.Fatalf("%#v !VerboseEqual %#v, since %v", msg, p, err)
 	}
 }
-func TestPingGoString(t *testing.T) {
+func TestLocationRecordGoString(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedPing(popr, false)
+	p := NewPopulatedLocationRecord(popr, false)
 	s1 := p.GoString()
 	s2 := fmt.Sprintf("%#v", p)
 	if s1 != s2 {
@@ -206,10 +206,10 @@ func TestPingGoString(t *testing.T) {
 		t.Fatal(err)
 	}
 }
-func TestPingSize(t *testing.T) {
+func TestLocationRecordSize(t *testing.T) {
 	seed := time.Now().UnixNano()
 	popr := math_rand.New(math_rand.NewSource(seed))
-	p := NewPopulatedPing(popr, true)
+	p := NewPopulatedLocationRecord(popr, true)
 	size2 := github_com_gogo_protobuf_proto.Size(p)
 	dAtA, err := github_com_gogo_protobuf_proto.Marshal(p)
 	if err != nil {
@@ -228,12 +228,12 @@ func TestPingSize(t *testing.T) {
 	}
 }
 
-func BenchmarkPingSize(b *testing.B) {
+func BenchmarkLocationRecordSize(b *testing.B) {
 	popr := math_rand.New(math_rand.NewSource(616))
 	total := 0
-	pops := make([]*Ping, 1000)
+	pops := make([]*LocationRecord, 1000)
 	for i := 0; i < 1000; i++ {
-		pops[i] = NewPopulatedPing(popr, false)
+		pops[i] = NewPopulatedLocationRecord(popr, false)
 	}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -242,9 +242,9 @@ func BenchmarkPingSize(b *testing.B) {
 	b.SetBytes(int64(total / b.N))
 }
 
-func TestPingStringer(t *testing.T) {
+func TestLocationRecordStringer(t *testing.T) {
 	popr := math_rand.New(math_rand.NewSource(time.Now().UnixNano()))
-	p := NewPopulatedPing(popr, false)
+	p := NewPopulatedLocationRecord(popr, false)
 	s1 := p.String()
 	s2 := fmt.Sprintf("%v", p)
 	if s1 != s2 {

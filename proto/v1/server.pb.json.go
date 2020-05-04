@@ -10,7 +10,7 @@ import (
 )
 
 // MarshalJSON implements json.Marshaler
-func (msg *Ping) MarshalJSON() ([]byte, error) {
+func (msg *LocationRecord) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	err := (&jsonpb.Marshaler{
 		EnumsAsInts:  false,
@@ -21,6 +21,6 @@ func (msg *Ping) MarshalJSON() ([]byte, error) {
 }
 
 // UnmarshalJSON implements json.Unmarshaler
-func (msg *Ping) UnmarshalJSON(b []byte) error {
+func (msg *LocationRecord) UnmarshalJSON(b []byte) error {
 	return jsonpb.Unmarshal(bytes.NewReader(b), msg)
 }
