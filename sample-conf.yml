@@ -1,11 +1,9 @@
+storage: mongodb://localhost:27017
+broker: amqp://guest:guest@localhost:5672/ct19
 server:
   name: sample-ct19.bryk.io
   home: tmp
   port: 9090
-  storage: mongodb://localhost:27017
-  broker: amqp://guest:guest@localhost:5672
-worker:
-  broker: amqp://guest:guest@localhost:5672
 resolver:
   - method: ccp
     endpoint: https://did.baidu.com/v1/did/resolve/{{.DID}}

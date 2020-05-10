@@ -6,8 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"go.bryk.io/covid-tracking/server"
-	"go.bryk.io/x/ccg/did"
+	"go.bryk.io/covid-tracking/api"
 	xlog "go.bryk.io/x/log"
 )
 
@@ -26,7 +25,7 @@ in the voluntary and privacy-respecting tracking and notification
 of individuals at potential risk of contagion for COVID-19.
 
 For more information:
-https://go.bryk.io/covid-tracking`,
+https://github.com/bryk-io/c19-tracking`,
 }
 
 // Execute provides the main entry point for the application
@@ -60,19 +59,21 @@ func initConfig() {
 	}
 }
 
-func getServerHandler() (*server.Handler, error) {
-	// Get parameters
-	name := viper.GetString("server.name")
-	home := viper.GetString("server.home")
-	port := viper.GetInt("server.port")
-	store := viper.GetString("server.storage")
+func getServerHandler() (*api.Server, error) {
+	// API server options
+	opts := &api.ServerOptions{
+		Name:   viper.GetString("server.name"),
+		Home:   viper.GetString("server.home"),
+		Store:  viper.GetString("storage"),
+		Broker: viper.GetString("broker"),
+		Logger: log,
+	}
 
 	// Get resolver settings
-	var providers []*did.Provider
-	if err := viper.UnmarshalKey("resolver", &providers); err != nil {
+	if err := viper.UnmarshalKey("resolver", &opts.Providers); err != nil {
 		return nil, err
 	}
 
 	// Prepare server handler
-	return server.NewHandler(name, home, store, port, providers)
+	return api.NewServer(opts)
 }

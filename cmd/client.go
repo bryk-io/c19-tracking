@@ -10,8 +10,8 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.bryk.io/covid-tracking/api"
 	protov1 "go.bryk.io/covid-tracking/proto/v1"
-	"go.bryk.io/covid-tracking/server"
 	"go.bryk.io/x/cli"
 	"go.bryk.io/x/cli/shell"
 	"go.bryk.io/x/net/rpc"
@@ -91,7 +91,7 @@ func runClient(_ *cobra.Command, args []string) error {
 	if err != nil {
 		return errors.Wrap(err, "failed to start shell instance")
 	}
-	for _, cmd := range server.GetShellCommands(sh, cl) {
+	for _, cmd := range api.GetShellCommands(sh, cl) {
 		sh.AddCommand(cmd)
 	}
 	sh.Start()

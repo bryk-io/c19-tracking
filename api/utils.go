@@ -1,4 +1,4 @@
-package server
+package api
 
 import (
 	"context"
@@ -107,7 +107,7 @@ func setupAuthEnforcer() (*auth.Enforcer, error) {
 	if err != nil {
 		return nil, err
 	}
-	for _, r := range strings.Split(accessPolicy, "\n") {
+	for _, r := range strings.Split(utils.AccessPolicy(), "\n") {
 		if strings.HasPrefix(r, "#") || strings.TrimSpace(r) == "" {
 			continue // Ignore comments and empty lines
 		}

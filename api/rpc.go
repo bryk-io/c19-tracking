@@ -1,4 +1,4 @@
-package server
+package api
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 )
 
 type remoteInterface struct {
-	sh *Handler
+	srv *Server
 }
 
 // Ping provides a sample reachability test method. This method does not require authentication.
@@ -28,19 +28,19 @@ func (ri *remoteInterface) ActivationCode(ctx context.Context,
 	// Activation codes for "agent" role require authentication and authorization
 	if req.Role == "agent" {
 		// Authentication (ignoring expiration date)
-		token, err := ri.sh.authenticate(ctx, true)
+		token, err := ri.srv.authenticate(ctx, true)
 		if err != nil {
 			return nil, err
 		}
 
 		// Authorization
-		if !ri.sh.authorize(token, "/activation_code/agent", "create") {
+		if !ri.srv.authorize(token, "/activation_code/agent", "create") {
 			return nil, errUnauthorized
 		}
 	}
 
 	// Process request
-	code, err := ri.sh.ActivationCode(req)
+	code, err := ri.srv.ActivationCode(req)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func (ri *remoteInterface) Credentials(_ context.Context,
 	if !isRoleValid(req.Role) || req.Role == "admin" {
 		return nil, errInvalidRequest
 	}
-	return ri.sh.AccessToken(req, true)
+	return ri.srv.AccessToken(req, true)
 }
 
 // RenewCredentials allows to refresh a valid but expired access token for a new one.
@@ -62,32 +62,32 @@ func (ri *remoteInterface) Credentials(_ context.Context,
 func (ri *remoteInterface) RenewCredentials(ctx context.Context,
 	req *protov1.RenewCredentialsRequest) (*protov1.CredentialsResponse, error) {
 	// Authentication (ignoring expiration date)
-	token, err := ri.sh.authenticate(ctx, false)
+	token, err := ri.srv.authenticate(ctx, false)
 	if err != nil {
 		return nil, err
 	}
 
 	// Authorization
-	if !ri.sh.authorize(token, "/credentials", "renew") {
+	if !ri.srv.authorize(token, "/credentials", "renew") {
 		return nil, errUnauthorized
 	}
 
-	return ri.sh.RenewToken(token, req.RefreshCode)
+	return ri.srv.RenewToken(token, req.RefreshCode)
 }
 
 // Record location events.
 func (ri *remoteInterface) Record(ctx context.Context,
 	req *protov1.RecordRequest) (*protov1.RecordResponse, error) {
 	// Authentication
-	token, err := ri.sh.authenticate(ctx, true)
+	token, err := ri.srv.authenticate(ctx, true)
 	if err != nil {
 		return nil, err
 	}
 
 	// Authorization
-	if !ri.sh.authorize(token, "/record", "create") {
+	if !ri.srv.authorize(token, "/record", "create") {
 		return nil, errUnauthorized
 	}
 
-	return ri.sh.LocationRecord(token, req)
+	return ri.srv.LocationRecord(token, req)
 }

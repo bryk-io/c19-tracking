@@ -39,13 +39,13 @@ func init() {
 		{
 			Name:      "storage",
 			Usage:     "Storage component endpoint",
-			FlagKey:   "server.storage",
+			FlagKey:   "storage",
 			ByDefault: "mongodb://localhost:27017",
 		},
 		{
 			Name:      "broker",
 			Usage:     "Message broker endpoint",
-			FlagKey:   "server.broker",
+			FlagKey:   "broker",
 			ByDefault: "amqp://localhost:5672",
 		},
 	}
@@ -62,6 +62,12 @@ func runServer(_ *cobra.Command, _ []string) error {
 		return err
 	}
 
+	// Setup HTTP access
+	httpGw, err := handler.HTTPGateway(port)
+	if err != nil {
+		return err
+	}
+
 	// Setup RPC server
 	srvOptions := []rpc.ServerOption{
 		rpc.WithNetworkInterface(rpc.NetworkInterfaceAll),
@@ -70,7 +76,7 @@ func runServer(_ *cobra.Command, _ []string) error {
 		rpc.WithPanicRecovery(),
 		rpc.WithService(handler.GetServiceDefinition()),
 		rpc.WithTLS(handler.TLSConfig()),
-		rpc.WithHTTPGateway(handler.HTTPGateway()),
+		rpc.WithHTTPGateway(httpGw),
 		rpc.WithMonitoring(rpc.MonitoringOptions{
 			IncludeHistograms:   true,
 			UseGoCollector:      true,
