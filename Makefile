@@ -1,8 +1,8 @@
 .PHONY: build proto
 default: help
 VERSION_TAG=0.1.0
-BINARY_NAME=covid-tracking
-DOCKER_IMAGE_NAME=covid-tracking
+BINARY_NAME=ct19
+DOCKER_IMAGE_NAME=ct19
 
 # Linker tags
 # https://golang.org/cmd/link/
@@ -98,3 +98,7 @@ proto:
 
 	# Fix inconsistent output from protoc-gen-govalidators
 	gofmt -w proto/v1/*.validator.pb.go
+
+## ci-update: Update the signature on the CI configuration file
+ci-update:
+	drone sign bryk-io/ct19 --save

@@ -14,18 +14,18 @@ var log xlog.Logger
 var cfgFile string
 
 var rootCmd = &cobra.Command{
-	Use:           "covid-tracking",
+	Use:           "ct19",
 	Short:         "Tracking and notification platform to assist in the COVID-19 pandemic crisis",
 	SilenceErrors: true,
 	SilenceUsage:  true,
-	Long: `COVID-19 Tracking
+	Long: `COVID-19 Contact Tracing
 
 Open platform to assist governments and health organizations
 in the voluntary and privacy-respecting tracking and notification
 of individuals at potential risk of contagion for COVID-19.
 
 For more information:
-https://github.com/bryk-io/c19-tracking`,
+https://github.com/bryk-io/ct19`,
 }
 
 // Execute provides the main entry point for the application
@@ -39,7 +39,7 @@ func Execute() {
 func init() {
 	log = xlog.WithZero(true)
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /etc/covid-tracking/config.yml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /etc/ct19/config.yml)")
 }
 
 func initConfig() {
