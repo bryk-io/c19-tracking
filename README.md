@@ -247,6 +247,10 @@ document like the following as an authenticated POST operation to the endpoint
 ```
 
 ## User Tracking
+
+A user continuously monitors and reports his/her location utilizing a client
+application. The general process is the following.
+
 - The application gets the user location and generates a record containing the
   following details.
     - Timestamp
@@ -269,8 +273,9 @@ document like the following as an authenticated POST operation to the endpoint
   of 100 individual records.
 
 ## User Notification
-- When a user is tested and identified as a positive COVID-19 case by an official
-  health care professional (i.e. the agent) a notification should be generated.
+When a user is tested and identified as a positive COVID-19 case by an official
+health care professional (i.e. the agent) a notification should be generated.
+
 - Using her application the agent scans the QR identifier on the user's phone.
   The application will generate a notification request with the following details.
     - Timestamp

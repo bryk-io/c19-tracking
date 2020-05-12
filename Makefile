@@ -56,6 +56,11 @@ ca-roots:
 build:
 	go build -v -ldflags '$(LD_FLAGS)' -o $(BINARY_NAME)
 
+## mobile-module: Build the WebAssambly mobile module
+# More information: https://github.com/golang/go/wiki/WebAssembly
+mobile-module:
+	GOOS=js GOARCH=wasm go build -v -o ./mobile/testdata/ct19-lib.wasm ./mobile
+
 ## build-for: Build the availabe binaries for the specified 'os' and 'arch'
 # make build-for os=linux arch=amd64
 build-for:

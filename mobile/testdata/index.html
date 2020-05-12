@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sample</title>
+    <script src="wasm_exec.js"></script>
+    <script>
+      // Use Polyfill is WASM is not supported by default
+      if (!WebAssembly.instantiateStreaming) {
+        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+          const source = await (await resp).arrayBuffer();
+          return await WebAssembly.instantiate(source, importObject);
+        };
+      }
+
+      // Load library module. When the module is ready the following global
+      // functions will be available.
+      // - createDID: Create a new DID instance
+      //   Parameters: did method (string)
+      // - publishRequest: Generates a new publish request
+      //   Parameters: did document (string), difficulty (int)
+      // - signatureLD: Generates a signature LD document.
+      //   Parameters: did document (string), message (int), domain value (string)
+      //
+      // All methods return JSON output. The "error" property is set in case of errors.
+      const go = new Go();
+      WebAssembly.instantiateStreaming(fetch("ct19-lib.wasm"), go.importObject).then((result) => {
+        go.run(result.instance);
+        console.log("WASM module initialized");
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

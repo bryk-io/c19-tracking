@@ -12,7 +12,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.6.3
-	go.bryk.io/x v0.0.0-20200510004120-4d614c0921e7
+	go.bryk.io/x v0.0.0-20200512190419-e5abc3ed8c7d
 	go.mongodb.org/mongo-driver v1.3.2
 	golang.org/x/crypto v0.0.0-20200406173513-056763e48d71
 	google.golang.org/grpc v1.28.1
