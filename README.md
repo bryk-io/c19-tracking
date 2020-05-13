@@ -202,50 +202,6 @@ Sample JSON-LD proof.
 For more information on the DID specifications refer to the
 [W3C Community Working Group](https://w3c.github.io/did-core/).
 
-## API
-
-The main way to communicate with the platform is through the public API.
-The server provides an HTTP2 and HTTPS interface to expose the available
-functionality. When using HTTPS all data provided to, and returned by,
-the server is encoded in JSON format.
-
-For methods requiring authentication, the credentials must be provided
-as a bearer token using the `Auhentication` HTTP header.
-
-```
-Authorization: Bearer "...JWT token goes here..."
-```  
-
-The available API methods are the following.
-
-- __GET /v1/api/ping__: Basic reachability test.
-- __POST /v1/api/activation_code__: Request a new device activation code.
-- __POST /v1/api/credentials__: Request new access credentials.
-- __POST /v1/api/credentials_renew__: Renew a previously-issued access
-  credential.
-- __POST /v1/api/record__: Process location record events. A maximum value
-  of 100 record per-request is enforced.
-
-For example, to submit a new location record to be processed. Send a JSON
-document like the following as an authenticated POST operation to the endpoint
-`/v1/api/record` on the API server.
-
-```json
-{
-  "records": [
-    {
-      "did": "did:iadb:7889c965-4644-44ff-b760-f396f1d11444",
-      "lat": -77.08672,
-      "lng": 38.862846,
-      "alt": 0,
-      "timestamp": "1588619270",
-      "hash": "57365a03a9550e46aba13de8840f4674aaf198f506d0251b48c55c994efc0602",
-      "proof": "ewogICJAY29udGV4...|shortened for readability|...RzhWY0xCQT09Igp9"
-    }
-  ]
-}
-```
-
 ## User Tracking
 
 A user continuously monitors and reports his/her location utilizing a client
@@ -297,3 +253,186 @@ health care professional (i.e. the agent) a notification should be generated.
   with the patient based on its ping records.
 - The server dispatch notifications to all the users at risk using the available
   delivery mechanisms, for example: Push notifications, In-app notifications, etc.
+
+## API
+
+The main way to communicate with the platform is through the public API.
+The server provides an HTTP2 and HTTPS interface to expose the available
+functionality. When using HTTPS all data provided to, and returned by,
+the server is encoded in JSON format.
+
+For methods requiring authentication, the credentials must be provided
+as a bearer token using the `Auhentication` HTTP header.
+
+```
+Authorization: Bearer "...JWT token goes here..."
+```
+
+For example, to submit a new location record to be processed. Send a JSON
+document like the following as an authenticated POST operation to the endpoint
+`/v1/api/record` on the API server.
+
+```json
+{
+  "records": [
+    {
+      "did": "did:iadb:7889c965-4644-44ff-b760-f396f1d11444",
+      "lat": -77.08672,
+      "lng": 38.862846,
+      "alt": 0,
+      "timestamp": "1588619270",
+      "hash": "57365a03a9550e46aba13de8840f4674aaf198f506d0251b48c55c994efc0602",
+      "proof": "ewogICJAY29udGV4...|shortened for readability|...RzhWY0xCQT09Igp9"
+    }
+  ]
+}
+```
+
+The complete (and latest) version of the OpenAPI/Swagger specification is
+[available here.](https://github.com/bryk-io/ct19/blob/master/proto/v1/tracking_server_api.swagger.json)
+The available API methods are the following.
+
+### /v1/api/ping
+
+Basic reachability test.
+
+```json
+{
+    "/v1/api/ping": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1PingResponse"
+            }
+          }
+        }
+      }
+    }
+}
+```
+
+### /v1/api/record
+
+Process location record events. A maximum value of 100 record per-request is enforced.
+
+```json
+{
+    "/v1/api/record": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1RecordResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RecordRequest"
+            }
+          }
+        ]
+      }
+    }
+}
+```
+
+### /v1/api/activation_code
+
+Generate a new activation code.
+
+```json
+{
+    "/v1/api/activation_code": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1ActivationCodeResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1ActivationCodeRequest"
+            }
+          }
+        ]
+      }
+    }
+}
+```
+
+### /v1/api/credentials
+
+Get access credentials for the platform.
+
+```json
+{
+    "/v1/api/credentials": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CredentialsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CredentialsRequest"
+            }
+          }
+        ]
+      }
+    }
+}
+```
+
+### /v1/api/credentials_renew
+
+Renew a previously-issued access credential.
+
+```json
+{
+    "/v1/api/credentials_renew": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CredentialsResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1RenewCredentialsRequest"
+            }
+          }
+        ]
+      }
+    }
+}
+```

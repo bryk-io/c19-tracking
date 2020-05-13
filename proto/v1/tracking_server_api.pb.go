@@ -1171,12 +1171,12 @@ type TrackingServerAPIClient interface {
 	Ping(ctx context.Context, in *types.Empty, opts ...grpc.CallOption) (*PingResponse, error)
 	// Generate a new activation code.
 	ActivationCode(ctx context.Context, in *ActivationCodeRequest, opts ...grpc.CallOption) (*ActivationCodeResponse, error)
-	// Get credentials for an account in the platform.
+	// Get access credentials for the platform.
 	Credentials(ctx context.Context, in *CredentialsRequest, opts ...grpc.CallOption) (*CredentialsResponse, error)
-	// Renew a previously-issued credential.
+	// Renew a previously-issued access credential.
 	RenewCredentials(ctx context.Context, in *RenewCredentialsRequest, opts ...grpc.CallOption) (*CredentialsResponse, error)
-	// Process location record events. A maximum value of 100 record per-request
-	// is enforced.
+	// Process location record events. A maximum value of 100 record
+	// per-request is enforced.
 	Record(ctx context.Context, in *RecordRequest, opts ...grpc.CallOption) (*RecordResponse, error)
 }
 
@@ -1239,12 +1239,12 @@ type TrackingServerAPIServer interface {
 	Ping(context.Context, *types.Empty) (*PingResponse, error)
 	// Generate a new activation code.
 	ActivationCode(context.Context, *ActivationCodeRequest) (*ActivationCodeResponse, error)
-	// Get credentials for an account in the platform.
+	// Get access credentials for the platform.
 	Credentials(context.Context, *CredentialsRequest) (*CredentialsResponse, error)
-	// Renew a previously-issued credential.
+	// Renew a previously-issued access credential.
 	RenewCredentials(context.Context, *RenewCredentialsRequest) (*CredentialsResponse, error)
-	// Process location record events. A maximum value of 100 record per-request
-	// is enforced.
+	// Process location record events. A maximum value of 100 record
+	// per-request is enforced.
 	Record(context.Context, *RecordRequest) (*RecordResponse, error)
 }
 

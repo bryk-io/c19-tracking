@@ -41,22 +41,22 @@ service TrackingServerAPI {
       body: "*"
     };
   }
-  // Get credentials for an account in the platform.
+  // Get access credentials for the platform.
   rpc Credentials(CredentialsRequest) returns (CredentialsResponse) {
     option (google.api.http) = {
       post: "/v1/api/credentials"
       body: "*"
     };
   }
-  // Renew a previously-issued credential.
+  // Renew a previously-issued access credential.
   rpc RenewCredentials(RenewCredentialsRequest) returns (CredentialsResponse) {
     option (google.api.http) = {
       post: "/v1/api/credentials_renew"
       body: "*"
     };
   }
-  // Process location record events. A maximum value of 100 record per-request
-  // is enforced.
+  // Process location record events. A maximum value of 100 record
+  // per-request is enforced.
   rpc Record(RecordRequest) returns (RecordResponse) {
     option (google.api.http) = {
       post: "/v1/api/record"

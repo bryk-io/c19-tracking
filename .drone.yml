@@ -32,6 +32,7 @@ steps:
 
 - name: Report result
   image: plugins/slack
+  failure: ignore
   settings:
     webhook:
       from_secret: slack-webhook
@@ -58,6 +59,6 @@ trigger:
 
 ---
 kind: signature
-hmac: e0f85581f17fe5c65b104fddd23f939e230156ae21d7fd6fde21ac235d9c5a46
+hmac: cce49eeb2959d147675bd1ed1cc633df688a5c7e7003a41ff80fcf237064c7cd
 
 ...
