@@ -23,5 +23,5 @@ vendor/**
 
 # Artifacts
 /release/**
-covid-tracking*
-ct19
+/covid-tracking*
+/ct19*

@@ -19,6 +19,54 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
+var defaultPKIConf = `{
+  "signing": {
+    "default": {
+      "expiry": "720h",
+      "usage": [
+        "key encipherment",
+        "digital signature",
+        "client auth"
+      ]
+    },
+    "profiles": {
+      "namespace": {
+        "ca_constraint": {
+          "is_ca": true,
+          "max_path_len": 1
+        },
+        "expiry": "8760h",
+        "usages": [
+          "cert sign",
+          "crl sign"
+        ]
+      },
+      "agent": {
+        "ca_constraint": {
+          "is_ca": false
+        },
+        "expiry": "8760h",
+        "usages": [
+          "key encipherment",
+          "digital signature",
+          "client auth"
+        ]
+      }
+    }
+  }
+}
+`
+
+var defaultRootCSR = `{
+  "cn": "ct19-api-server",
+  "key": {
+    "algo": "ecdsa",
+    "size": 384
+  },
+  "names": [{}]
+}
+`
+
 // Ensure the root CA files are in place or create it if required.
 func verifyRootCA(home string) error {
 	certFile := filepath.Clean(filepath.Join(home, "root-ca.crt"))
@@ -30,9 +78,10 @@ func verifyRootCA(home string) error {
 	}
 
 	// Create new root CA
+	var csr []byte
 	csr, err := ioutil.ReadFile(filepath.Clean(filepath.Join(home, "root-ca.json")))
 	if err != nil {
-		return errors.Wrap(err, "no CSR file")
+		csr = []byte(defaultRootCSR)
 	}
 	cert, key, err := pki.RootCA(csr)
 	if err != nil {
@@ -49,8 +98,8 @@ func verifyRootCA(home string) error {
 
 // Ensure the TLS certificate is in place and valid.
 func verifyTLSCertificate(home string) (*rpc.ServerTLSConfig, error) {
-	certFile := filepath.Join(home, "tls.crt")
-	keyFile := filepath.Join(home, "tls.pem")
+	certFile := filepath.Join(home, "tls", "tls.crt")
+	keyFile := filepath.Join(home, "tls", "tls.key")
 	if !pki.IsKeyPairFile(certFile, keyFile) {
 		return nil, errors.New("TLS certificate is required")
 	}
@@ -74,13 +123,13 @@ func verifyTLSCertificate(home string) (*rpc.ServerTLSConfig, error) {
 func setupPKI(home string) (*pki.CA, error) {
 	certFile := filepath.Clean(filepath.Join(home, "root-ca.crt"))
 	keyFile := filepath.Clean(filepath.Join(home, "root-ca.pem"))
-
 	if !pki.IsKeyPairFile(certFile, keyFile) {
 		return nil, errors.New("invalid root CA credentials")
 	}
+	var conf []byte
 	conf, err := ioutil.ReadFile(filepath.Clean(filepath.Join(home, "pki.json")))
 	if err != nil {
-		return nil, err
+		conf = []byte(defaultPKIConf)
 	}
 	caConf, err := pki.DecodeConfig(conf)
 	if err != nil {

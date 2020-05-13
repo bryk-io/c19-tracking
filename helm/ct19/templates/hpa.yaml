@@ -1,0 +1,74 @@
+{{- if .Values.horizontalAutoscaling.apiServer.enabled }}
+{{- $fullName := include "cc.fullname" . -}}
+{{- $labels := include "cc.labels" . -}}
+  {{- with .Values.horizontalAutoscaling.apiServer }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  labels:
+    {{- $labels | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  name: {{ printf "%s-hpa" $fullName }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $fullName }}
+  maxReplicas: {{ .maxReplicas }}
+  minReplicas: {{ .minReplicas }}
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: {{ .cpu }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: {{ .memory }}
+---
+  {{- end }}
+{{- end -}}
+
+{{- if .Values.horizontalAutoscaling.workers.enabled }}
+{{- $fullName := include "cc.fullname" . -}}
+{{- $labels := include "cc.labels" . -}}
+  {{- with .Values.horizontalAutoscaling.workers }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  labels:
+  {{- $labels | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+  name: {{ printf "%s-workers-hpa" $fullName }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ printf "%s-workers" $fullName }}
+  maxReplicas: {{ .maxReplicas }}
+  minReplicas: {{ .minReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .cpu }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .memory }}
+  {{- end }}
+{{- end -}}

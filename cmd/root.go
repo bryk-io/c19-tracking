@@ -39,7 +39,7 @@ func Execute() {
 func init() {
 	log = xlog.WithZero(true)
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is /etc/ct19/config.yml)")
+	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file")
 }
 
 func initConfig() {
@@ -48,14 +48,20 @@ func initConfig() {
 	viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	viper.AutomaticEnv()
 
-	// Set configuration file
+	// Configuration file
+	viper.AddConfigPath("/etc/ct19")
+	viper.AddConfigPath("$HOME/ct19")
+	viper.AddConfigPath("$HOME/.ct19")
+	viper.AddConfigPath(".")
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
 	}
 
 	// Read configuration file
 	if err := viper.ReadInConfig(); err != nil {
-		log.WithField("error", err).Error("failed to read configuration file")
+		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
+			log.WithField("error", err.Error()).Error("failed to read configuration file")
+		}
 	}
 }
 

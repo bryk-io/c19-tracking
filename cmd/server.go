@@ -34,7 +34,7 @@ func init() {
 			Name:      "home",
 			Usage:     "Home directory for the server instance",
 			FlagKey:   "server.home",
-			ByDefault: "/etc/covid-tracking",
+			ByDefault: "/etc/ct19",
 		},
 		{
 			Name:      "storage",

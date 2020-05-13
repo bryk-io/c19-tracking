@@ -1,0 +1,19 @@
+apiVersion: v2
+name: ct19
+description: COVID-19 Contact Tracing Platform
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+home: https://github.com/bryk-io/ct19
+icon: https://raw.githubusercontent.com/bryk-io/ct19/master/helm/ct19/icon.png
+sources:
+  - https://github.com/bryk-io/ct19
+keywords:
+  - covid19
+  - tracing
+  - privacy
+  - did
+maintainers:
+  - name: Ben Cessa
+    email: ben@bryk.io
+    url: https://github.com/bcessa
