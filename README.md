@@ -436,3 +436,36 @@ Renew a previously-issued access credential.
     }
 }
 ```
+
+### /v1/api/new_identifier
+
+Helper method to generate a new DID instances for clients that can't
+generate it locally. This is not recommended but supported for low end
+devices and development purposes.
+
+```json
+{
+    "/v1/api/new_identifier": {
+      "post": {
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1NewIdentifierResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1NewIdentifierRequest"
+            }
+          }
+        ]
+      }
+    }
+}
+```

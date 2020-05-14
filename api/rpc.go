@@ -91,3 +91,11 @@ func (ri *remoteInterface) Record(ctx context.Context,
 
 	return ri.srv.LocationRecord(token, req)
 }
+
+// NewIdentifier provides a helper method to generate a new DID instances for
+// clients that can't generate it locally. This is not recommended but supported
+// for legacy and development purposes. This method does not require authentication.
+func (ri *remoteInterface) NewIdentifier(_ context.Context,
+	req *protov1.NewIdentifierRequest) (*protov1.NewIdentifierResponse, error) {
+	return ri.srv.NewIdentifier(req)
+}

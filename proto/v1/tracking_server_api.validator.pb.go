@@ -49,3 +49,9 @@ func (this *RecordRequest) Validate() error {
 func (this *RecordResponse) Validate() error {
 	return nil
 }
+func (this *NewIdentifierRequest) Validate() error {
+	return nil
+}
+func (this *NewIdentifierResponse) Validate() error {
+	return nil
+}

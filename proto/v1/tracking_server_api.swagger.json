@@ -92,6 +92,33 @@
         ]
       }
     },
+    "/v1/api/new_identifier": {
+      "post": {
+        "summary": "Helper method to generate a new DID instances for clients that can't\ngenerate it locally. This is not recommended but supported for legacy\nand development purposes.",
+        "operationId": "NewIdentifier",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1NewIdentifierResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1NewIdentifierRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TrackingServerAPI"
+        ]
+      }
+    },
     "/v1/api/ping": {
       "get": {
         "summary": "Reachability test.",
@@ -233,6 +260,29 @@
         }
       },
       "description": "Represents a unique location entry for a particular user/device."
+    },
+    "v1NewIdentifierRequest": {
+      "type": "object",
+      "properties": {
+        "method": {
+          "type": "string",
+          "description": "DID method to use for the generated identifier."
+        },
+        "auto_publish": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "Whether to automatically publish the identifier once\ngenerated."
+        }
+      }
+    },
+    "v1NewIdentifierResponse": {
+      "type": "object",
+      "properties": {
+        "document": {
+          "type": "string",
+          "description": "Base64-encoded DID document."
+        }
+      }
     },
     "v1PingResponse": {
       "type": "object",

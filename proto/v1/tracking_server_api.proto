@@ -63,6 +63,15 @@ service TrackingServerAPI {
       body: "*"
     };
   }
+  // Helper method to generate a new DID instances for clients that can't
+  // generate it locally. This is not recommended but supported for legacy
+  // and development purposes.
+  rpc NewIdentifier(NewIdentifierRequest) returns (NewIdentifierResponse) {
+    option (google.api.http) = {
+      post: "/v1/api/new_identifier"
+      body: "*"
+    };
+  }
 }
 
 message PingResponse {
@@ -115,4 +124,17 @@ message RecordResponse {
   // Whether the record(s) request was successfully received
   // and handled.
   bool ok = 1;
+}
+
+message NewIdentifierRequest {
+  // DID method to use for the generated identifier.
+  string method = 1;
+  // Whether to automatically publish the identifier once
+  // generated.
+  bool auto_publish = 2;
+}
+
+message NewIdentifierResponse {
+  // Base64-encoded DID document.
+  string document = 1;
 }

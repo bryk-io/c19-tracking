@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -28,6 +29,7 @@ var (
 	errUnauthorized    = status.Error(codes.PermissionDenied, "unauthorized request")
 	errUnauthenticated = status.Error(codes.Unauthenticated, "invalid credentials")
 	errInvalidRequest  = status.Error(codes.InvalidArgument, "invalid request argument")
+	errInternalError   = status.Error(codes.Internal, "internal error")
 	errFailedToPublish = status.Error(codes.Unavailable, "failed to publish message")
 )
 
@@ -264,6 +266,52 @@ func (srv *Server) LocationRecord(token *jwx.Token, req *protov1.RecordRequest) 
 		return nil, errFailedToPublish
 	}
 	return &protov1.RecordResponse{Ok: res}, nil
+}
+
+// NewIdentifier provides a helper method to generate a new DID instances for
+// clients that can't generate it locally. This is not recommended but supported
+// for legacy and development purposes. This method does not require authentication.
+func (srv *Server) NewIdentifier(req *protov1.NewIdentifierRequest) (*protov1.NewIdentifierResponse, error) {
+	// Validate parameters
+	if req.Method == "" {
+		return nil, errInvalidRequest
+	}
+
+	// New DID instance
+	var err error
+	id, _ := did.NewIdentifierWithMode(req.Method, "", did.ModeUUID)
+	if err = id.AddNewKey("master", did.KeyTypeEd, did.EncodingBase58); err != nil {
+		return nil, errInternalError
+	}
+	if err = id.AddAuthenticationKey("master"); err != nil {
+		return nil, errInternalError
+	}
+	if err = id.AddProof("master", "sample-ct19.iadb.org"); err != nil {
+		return nil, errInternalError
+	}
+
+	// Full document as contents
+	js, _ := json.Marshal(id.Document())
+	contents := base64.StdEncoding.EncodeToString(js)
+
+	// Publish
+	if req.AutoPublish {
+		msg := amqp.Message{
+			Type:        "ct19.new_did",
+			Timestamp:   time.Now().UTC(),
+			MessageId:   uuid.New().String(),
+			ContentType: "application/json",
+			Body:        js,
+		}
+		_, err := srv.pub.Push(msg, amqp.MessageOptions{
+			Exchange:   "tasks",
+			Persistent: true,
+		})
+		if err != nil {
+			srv.log.WithField("did", id.String()).Warning("failed to submit publish request")
+		}
+	}
+	return &protov1.NewIdentifierResponse{Document: contents}, nil
 }
 
 // Generate bearer token and refresh code.

@@ -136,3 +136,35 @@ func (msg *RecordResponse) MarshalJSON() ([]byte, error) {
 func (msg *RecordResponse) UnmarshalJSON(b []byte) error {
 	return jsonpb.Unmarshal(bytes.NewReader(b), msg)
 }
+
+// MarshalJSON implements json.Marshaler
+func (msg *NewIdentifierRequest) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	err := (&jsonpb.Marshaler{
+		EnumsAsInts:  false,
+		EmitDefaults: true,
+		OrigName:     true,
+	}).Marshal(&buf, msg)
+	return buf.Bytes(), err
+}
+
+// UnmarshalJSON implements json.Unmarshaler
+func (msg *NewIdentifierRequest) UnmarshalJSON(b []byte) error {
+	return jsonpb.Unmarshal(bytes.NewReader(b), msg)
+}
+
+// MarshalJSON implements json.Marshaler
+func (msg *NewIdentifierResponse) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	err := (&jsonpb.Marshaler{
+		EnumsAsInts:  false,
+		EmitDefaults: true,
+		OrigName:     true,
+	}).Marshal(&buf, msg)
+	return buf.Bytes(), err
+}
+
+// UnmarshalJSON implements json.Unmarshaler
+func (msg *NewIdentifierResponse) UnmarshalJSON(b []byte) error {
+	return jsonpb.Unmarshal(bytes.NewReader(b), msg)
+}

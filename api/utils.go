@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
@@ -13,6 +14,7 @@ import (
 	"go.bryk.io/x/auth"
 	"go.bryk.io/x/ccg/did"
 	"go.bryk.io/x/jwx"
+	xlog "go.bryk.io/x/log"
 	"go.bryk.io/x/net/rpc"
 	"go.bryk.io/x/pki"
 	"golang.org/x/crypto/sha3"
@@ -251,4 +253,32 @@ func validateRecord(id *did.Identifier, r *protov1.LocationRecord) bool {
 
 	// All good!
 	return true
+}
+
+// Publish a DID instance
+func publishDID(id *did.Identifier, pow uint, ll xlog.Logger) {
+	var err error
+
+	// Get ticket
+	sd, _ := json.Marshal(id.SafeDocument())
+	ticket := &publishTicket{
+		Timestamp:  time.Now().Unix(),
+		Content:    sd,
+		KeyID:      "master",
+		NonceValue: 0,
+	}
+	key := id.Key("master")
+	ticket.Signature, err = key.Sign(ticket.Solve(pow))
+	if err != nil {
+		ll.Error("failed to generate ticket")
+		return
+	}
+
+	// Submit request
+	if !ticket.Submit() {
+		ll.Error("failed to publish DID")
+		return
+	}
+
+	ll.WithField("did", id.String()).Info("DID published successfully")
 }

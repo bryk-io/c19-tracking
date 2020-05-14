@@ -455,6 +455,110 @@ func (m *RecordResponse) GetOk() bool {
 	return false
 }
 
+type NewIdentifierRequest struct {
+	// DID method to use for the generated identifier.
+	Method string `protobuf:"bytes,1,opt,name=method,proto3" json:"method,omitempty"`
+	// Whether to automatically publish the identifier once
+	// generated.
+	AutoPublish          bool     `protobuf:"varint,2,opt,name=auto_publish,json=autoPublish,proto3" json:"auto_publish,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NewIdentifierRequest) Reset()      { *m = NewIdentifierRequest{} }
+func (*NewIdentifierRequest) ProtoMessage() {}
+func (*NewIdentifierRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f1f8a97bd56b0960, []int{8}
+}
+func (m *NewIdentifierRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *NewIdentifierRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_NewIdentifierRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *NewIdentifierRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NewIdentifierRequest.Merge(m, src)
+}
+func (m *NewIdentifierRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *NewIdentifierRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_NewIdentifierRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NewIdentifierRequest proto.InternalMessageInfo
+
+func (m *NewIdentifierRequest) GetMethod() string {
+	if m != nil {
+		return m.Method
+	}
+	return ""
+}
+
+func (m *NewIdentifierRequest) GetAutoPublish() bool {
+	if m != nil {
+		return m.AutoPublish
+	}
+	return false
+}
+
+type NewIdentifierResponse struct {
+	// Base64-encoded DID document.
+	Document             string   `protobuf:"bytes,1,opt,name=document,proto3" json:"document,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NewIdentifierResponse) Reset()      { *m = NewIdentifierResponse{} }
+func (*NewIdentifierResponse) ProtoMessage() {}
+func (*NewIdentifierResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f1f8a97bd56b0960, []int{9}
+}
+func (m *NewIdentifierResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *NewIdentifierResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_NewIdentifierResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *NewIdentifierResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NewIdentifierResponse.Merge(m, src)
+}
+func (m *NewIdentifierResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *NewIdentifierResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_NewIdentifierResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NewIdentifierResponse proto.InternalMessageInfo
+
+func (m *NewIdentifierResponse) GetDocument() string {
+	if m != nil {
+		return m.Document
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterType((*PingResponse)(nil), "bryk.covid.proto.v1.PingResponse")
 	proto.RegisterType((*ActivationCodeRequest)(nil), "bryk.covid.proto.v1.ActivationCodeRequest")
@@ -464,55 +568,63 @@ func init() {
 	proto.RegisterType((*CredentialsResponse)(nil), "bryk.covid.proto.v1.CredentialsResponse")
 	proto.RegisterType((*RecordRequest)(nil), "bryk.covid.proto.v1.RecordRequest")
 	proto.RegisterType((*RecordResponse)(nil), "bryk.covid.proto.v1.RecordResponse")
+	proto.RegisterType((*NewIdentifierRequest)(nil), "bryk.covid.proto.v1.NewIdentifierRequest")
+	proto.RegisterType((*NewIdentifierResponse)(nil), "bryk.covid.proto.v1.NewIdentifierResponse")
 }
 
 func init() { proto.RegisterFile("proto/v1/tracking_server_api.proto", fileDescriptor_f1f8a97bd56b0960) }
 
 var fileDescriptor_f1f8a97bd56b0960 = []byte{
-	// 684 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xcf, 0x6b, 0x13, 0x4d,
-	0x1c, 0xc6, 0xdf, 0xd9, 0xf4, 0xc7, 0xfb, 0x4e, 0xf3, 0xc6, 0x3a, 0x69, 0xd3, 0x34, 0xca, 0x90,
-	0x4e, 0x85, 0x86, 0xaa, 0x1b, 0x52, 0x0f, 0x42, 0xb1, 0x87, 0x26, 0x78, 0x10, 0x44, 0xc2, 0x5a,
-	0x2a, 0x68, 0x21, 0x6c, 0x76, 0xa7, 0xdb, 0x21, 0xe9, 0xce, 0x3a, 0xbb, 0x8d, 0xf4, 0x56, 0xbc,
-	0x0b, 0x82, 0x27, 0xaf, 0x9e, 0xc4, 0xbf, 0xc0, 0xa3, 0x47, 0xf1, 0x24, 0x78, 0xf1, 0xd8, 0x2c,
-	0xfe, 0x01, 0x1e, 0x3d, 0xca, 0xcc, 0xce, 0xd6, 0x34, 0xdd, 0xaa, 0xbd, 0xcd, 0x3e, 0xf3, 0x7d,
-	0xbe, 0xcf, 0x33, 0xe4, 0x13, 0x48, 0x02, 0xc1, 0x23, 0x5e, 0x1f, 0x34, 0xea, 0x91, 0xb0, 0x9d,
-	0x1e, 0xf3, 0xbd, 0x4e, 0x48, 0xc5, 0x80, 0x8a, 0x8e, 0x1d, 0x30, 0x53, 0x5d, 0xa2, 0x62, 0x57,
-	0x1c, 0xf6, 0x4c, 0x87, 0x0f, 0x98, 0x9b, 0x28, 0xe6, 0xa0, 0x51, 0xb9, 0xed, 0xb1, 0x68, 0xef,
-	0xa0, 0x6b, 0x3a, 0x7c, 0xbf, 0xee, 0x71, 0x8f, 0xd7, 0x3d, 0xce, 0xbd, 0x3e, 0xb5, 0x03, 0x16,
-	0xea, 0x63, 0xdd, 0x0e, 0x58, 0xdd, 0xf6, 0x7d, 0x1e, 0xd9, 0x11, 0xe3, 0x7e, 0x98, 0x78, 0x2b,
-	0x37, 0xc7, 0x8d, 0x4a, 0xee, 0x1e, 0xec, 0xaa, 0xaf, 0xa4, 0x8e, 0x3c, 0xe9, 0xf1, 0x2b, 0x7a,
-	0xd9, 0xc9, 0x14, 0xdd, 0x0f, 0xa2, 0x43, 0x7d, 0x39, 0x7f, 0xd2, 0x3e, 0x29, 0x9d, 0xc8, 0x04,
-	0xc3, 0x7c, 0x9b, 0xf9, 0x9e, 0x45, 0xc3, 0x80, 0xfb, 0x21, 0x45, 0x05, 0x68, 0xf0, 0x5e, 0x19,
-	0x54, 0x41, 0xed, 0x5f, 0xcb, 0xe0, 0x3d, 0xb2, 0x01, 0xe7, 0x37, 0x9d, 0x88, 0x0d, 0x54, 0xaf,
-	0x16, 0x77, 0xa9, 0x45, 0x9f, 0x1e, 0xd0, 0x30, 0x42, 0xb3, 0x30, 0xe7, 0x32, 0x57, 0x4d, 0xfe,
-	0x67, 0xc9, 0x23, 0x42, 0x70, 0x42, 0xf0, 0x3e, 0x2d, 0x1b, 0x4a, 0x52, 0x67, 0xb2, 0x09, 0x4b,
-	0xe3, 0x76, 0x1d, 0xb4, 0x02, 0x2f, 0xd9, 0x27, 0x37, 0x1d, 0x87, 0xbb, 0x54, 0xef, 0x2a, 0xd8,
-	0xa7, 0x0c, 0xe4, 0x10, 0xa2, 0x96, 0xa0, 0x2e, 0xf5, 0x23, 0x66, 0xf7, 0xc3, 0x0b, 0xc5, 0x67,
-	0x85, 0xe4, 0xb2, 0x42, 0xd0, 0x1c, 0x9c, 0x0c, 0x04, 0xe7, 0xbb, 0xe5, 0x89, 0x2a, 0xa8, 0xe5,
-	0xad, 0xe4, 0x83, 0xdc, 0x81, 0x0b, 0x16, 0xf5, 0xe9, 0xb3, 0x8c, 0xfc, 0x25, 0x98, 0x17, 0x74,
-	0x57, 0xd0, 0x70, 0x6f, 0xb4, 0xfb, 0x8c, 0xd6, 0x54, 0xf1, 0x27, 0xb0, 0x78, 0xca, 0xa8, 0x1f,
-	0xbe, 0x04, 0xf3, 0xb6, 0xe3, 0xd0, 0x30, 0xec, 0x44, 0xbc, 0x47, 0xfd, 0xd4, 0x99, 0x68, 0x5b,
-	0x52, 0x3a, 0xb3, 0xdc, 0x38, 0xbb, 0xfc, 0x01, 0xfc, 0xdf, 0xa2, 0x0e, 0x17, 0x6e, 0x5a, 0x68,
-	0x03, 0x4e, 0x0b, 0x25, 0x84, 0x65, 0x50, 0xcd, 0xd5, 0x66, 0xd6, 0x96, 0xcd, 0x0c, 0x16, 0xcd,
-	0xfb, 0xdc, 0x51, 0xaf, 0xd6, 0xe6, 0xd4, 0x43, 0xaa, 0xb0, 0x90, 0xee, 0xcb, 0x26, 0x61, 0xed,
-	0x68, 0x12, 0x5e, 0xde, 0xd2, 0xe0, 0x3f, 0x54, 0x08, 0x6d, 0xb6, 0xef, 0xa1, 0x47, 0x70, 0x42,
-	0xf2, 0x83, 0x4a, 0x66, 0x02, 0x9f, 0x99, 0xc2, 0x67, 0xde, 0x95, 0xf0, 0x55, 0x96, 0x32, 0x5b,
-	0x8c, 0x22, 0x47, 0xe6, 0x9e, 0x7f, 0xf9, 0xf6, 0xca, 0x28, 0xa0, 0xbc, 0x84, 0x53, 0xfe, 0x11,
-	0x02, 0xb9, 0xf0, 0x05, 0x80, 0x85, 0xd3, 0xe8, 0xa0, 0xd5, 0xcc, 0x5d, 0x99, 0x78, 0x56, 0xae,
-	0xff, 0xd5, 0xac, 0x6e, 0x40, 0x54, 0x83, 0xab, 0x64, 0x21, 0x6d, 0x30, 0x06, 0xcd, 0x3a, 0x58,
-	0x45, 0x47, 0x00, 0xce, 0x8c, 0xfc, 0x9c, 0x68, 0x25, 0x33, 0xe0, 0x2c, 0x29, 0x95, 0xda, 0x9f,
-	0x07, 0x75, 0x0d, 0xac, 0x6a, 0x94, 0x49, 0x31, 0xad, 0xe1, 0xfc, 0x1a, 0x92, 0x15, 0x5e, 0x02,
-	0x38, 0x3b, 0xce, 0x23, 0xba, 0x91, 0xb9, 0xfe, 0x1c, 0x6c, 0x2f, 0x50, 0xe6, 0x9a, 0x2a, 0x83,
-	0xc9, 0x62, 0x46, 0x99, 0x8e, 0x90, 0xeb, 0x65, 0xa5, 0x3e, 0x9c, 0x4a, 0xb0, 0x41, 0xe4, 0x9c,
-	0x1e, 0x23, 0x8c, 0x56, 0x96, 0x7f, 0x3b, 0xa3, 0x83, 0x17, 0x55, 0x70, 0x91, 0x14, 0xd2, 0xe0,
-	0x04, 0xd1, 0x75, 0xb0, 0xda, 0x7c, 0x0d, 0xbe, 0x0e, 0xf1, 0x3f, 0xc7, 0x43, 0x0c, 0xbe, 0x0f,
-	0x31, 0xf8, 0x31, 0xc4, 0xe0, 0x28, 0xc6, 0xe0, 0x6d, 0x8c, 0xc1, 0xfb, 0x18, 0x83, 0x0f, 0x31,
-	0x06, 0x1f, 0x63, 0x0c, 0x3e, 0xc7, 0x18, 0x1c, 0xc7, 0x18, 0xc0, 0x12, 0xe3, 0x59, 0x81, 0xcd,
-	0xd2, 0x18, 0xc6, 0x01, 0x6b, 0xcb, 0xab, 0x36, 0x78, 0x3c, 0xad, 0x66, 0x06, 0x8d, 0x37, 0x46,
-	0xae, 0xd9, 0x6a, 0xbf, 0x33, 0x8a, 0x4d, 0x69, 0x6f, 0x29, 0xbb, 0x9a, 0x31, 0xb7, 0x1b, 0x9f,
-	0x12, 0x75, 0x47, 0xa9, 0x3b, 0x4a, 0xdd, 0xd9, 0x6e, 0x74, 0xa7, 0x94, 0xf5, 0xd6, 0xcf, 0x00,
-	0x00, 0x00, 0xff, 0xff, 0x57, 0x15, 0x55, 0x95, 0x26, 0x06, 0x00, 0x00,
+	// 781 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x53, 0x41, 0x6f, 0x12, 0x4f,
+	0x1c, 0xfd, 0x0f, 0xf4, 0x4f, 0xeb, 0x40, 0xb1, 0x0e, 0x2d, 0xa5, 0x5b, 0xb3, 0x81, 0xa9, 0x49,
+	0x11, 0x75, 0x09, 0xed, 0xc1, 0xa4, 0xb1, 0x87, 0x42, 0x3c, 0x34, 0x31, 0x0d, 0xae, 0x4d, 0x4d,
+	0xb4, 0x09, 0x59, 0x76, 0x07, 0x98, 0x00, 0x3b, 0xeb, 0xee, 0x42, 0xd3, 0x5b, 0xe3, 0xcd, 0x44,
+	0x13, 0x13, 0x4f, 0x5e, 0x3d, 0x19, 0x3f, 0x81, 0x47, 0x8f, 0xc6, 0x93, 0x89, 0x17, 0x8f, 0x85,
+	0xf8, 0x01, 0x3c, 0x7a, 0x34, 0x3b, 0x3b, 0x8b, 0x40, 0xb7, 0xda, 0xde, 0x76, 0xde, 0xfc, 0x7e,
+	0xef, 0xbd, 0x81, 0xf7, 0x20, 0xb6, 0x6c, 0xe6, 0xb2, 0x62, 0xbf, 0x54, 0x74, 0x6d, 0x4d, 0x6f,
+	0x53, 0xb3, 0x59, 0x73, 0x88, 0xdd, 0x27, 0x76, 0x4d, 0xb3, 0xa8, 0xc2, 0x2f, 0x51, 0xaa, 0x6e,
+	0x1f, 0xb7, 0x15, 0x9d, 0xf5, 0xa9, 0xe1, 0x23, 0x4a, 0xbf, 0x24, 0xdd, 0x6d, 0x52, 0xb7, 0xd5,
+	0xab, 0x2b, 0x3a, 0xeb, 0x16, 0x9b, 0xac, 0xc9, 0x8a, 0x4d, 0xc6, 0x9a, 0x1d, 0xa2, 0x59, 0xd4,
+	0x11, 0x9f, 0x45, 0xcd, 0xa2, 0x45, 0xcd, 0x34, 0x99, 0xab, 0xb9, 0x94, 0x99, 0x8e, 0xbf, 0x2b,
+	0xdd, 0x99, 0x5e, 0xe4, 0x70, 0xbd, 0xd7, 0xe0, 0x27, 0xdf, 0x8e, 0xf7, 0x25, 0xc6, 0x57, 0x05,
+	0xd9, 0x68, 0x8a, 0x74, 0x2d, 0xf7, 0x58, 0x5c, 0x2e, 0x8d, 0xdc, 0xfb, 0xa6, 0x7d, 0x18, 0xcb,
+	0x30, 0x51, 0xa5, 0x66, 0x53, 0x25, 0x8e, 0xc5, 0x4c, 0x87, 0xa0, 0x24, 0x8c, 0xb0, 0x76, 0x06,
+	0x64, 0x41, 0x7e, 0x4e, 0x8d, 0xb0, 0x36, 0xde, 0x86, 0x4b, 0x3b, 0xba, 0x4b, 0xfb, 0xdc, 0x57,
+	0x85, 0x19, 0x44, 0x25, 0xcf, 0x7a, 0xc4, 0x71, 0xd1, 0x02, 0x8c, 0x1a, 0xd4, 0xe0, 0x93, 0x57,
+	0x54, 0xef, 0x13, 0x21, 0x38, 0x63, 0xb3, 0x0e, 0xc9, 0x44, 0x38, 0xc4, 0xbf, 0xf1, 0x0e, 0x4c,
+	0x4f, 0xaf, 0x0b, 0xa1, 0x75, 0x78, 0x55, 0x1b, 0xdd, 0xd4, 0x74, 0x66, 0x10, 0xc1, 0x95, 0xd4,
+	0x26, 0x16, 0xf0, 0x31, 0x44, 0x15, 0x9b, 0x18, 0xc4, 0x74, 0xa9, 0xd6, 0x71, 0x2e, 0x25, 0x1f,
+	0x26, 0x12, 0x0d, 0x13, 0x41, 0x8b, 0xf0, 0x7f, 0xcb, 0x66, 0xac, 0x91, 0x99, 0xc9, 0x82, 0x7c,
+	0x42, 0xf5, 0x0f, 0xf8, 0x1e, 0x5c, 0x56, 0x89, 0x49, 0x8e, 0x42, 0xf4, 0x73, 0x30, 0x61, 0x93,
+	0x86, 0x4d, 0x9c, 0xd6, 0xb8, 0xf7, 0xb8, 0xc0, 0xb8, 0xf1, 0xa7, 0x30, 0x35, 0xb1, 0x28, 0x1e,
+	0x9e, 0x83, 0x09, 0x4d, 0xd7, 0x89, 0xe3, 0xd4, 0x5c, 0xd6, 0x26, 0x66, 0xb0, 0xe9, 0x63, 0xfb,
+	0x1e, 0x74, 0x86, 0x3c, 0x72, 0x96, 0x7c, 0x0f, 0xce, 0xab, 0x44, 0x67, 0xb6, 0x11, 0x18, 0xda,
+	0x86, 0xb3, 0x36, 0x07, 0x9c, 0x0c, 0xc8, 0x46, 0xf3, 0xf1, 0x8d, 0x35, 0x25, 0x24, 0x8b, 0xca,
+	0x03, 0xa6, 0xf3, 0x57, 0x8b, 0xe5, 0x60, 0x07, 0x67, 0x61, 0x32, 0xe0, 0x3b, 0x27, 0x09, 0x0f,
+	0xe1, 0xe2, 0x1e, 0x39, 0xda, 0xe5, 0xef, 0x69, 0x50, 0x62, 0x07, 0xc2, 0x69, 0x18, 0xeb, 0x12,
+	0xb7, 0xc5, 0x82, 0x3f, 0x43, 0x9c, 0xf8, 0x3b, 0x7b, 0x2e, 0xab, 0x59, 0xbd, 0x7a, 0x87, 0x3a,
+	0x2d, 0xfe, 0x88, 0x39, 0x35, 0xee, 0x61, 0x55, 0x1f, 0xc2, 0x9b, 0x70, 0x69, 0x8a, 0x52, 0x68,
+	0x4b, 0x70, 0xce, 0x60, 0x7a, 0xaf, 0x4b, 0x4c, 0x57, 0xb0, 0x8e, 0xce, 0x1b, 0x2f, 0x63, 0xf0,
+	0xda, 0xbe, 0x28, 0xe0, 0x23, 0x1e, 0xe5, 0x9d, 0xea, 0x2e, 0x7a, 0x0c, 0x67, 0xbc, 0x1c, 0xa3,
+	0xb4, 0xe2, 0x97, 0x40, 0x09, 0x4a, 0xa0, 0xdc, 0xf7, 0x4a, 0x20, 0xe5, 0x42, 0x7f, 0x8d, 0xf1,
+	0xe8, 0xe3, 0xc5, 0xe7, 0xdf, 0x7e, 0xbc, 0x89, 0x24, 0x51, 0xc2, 0x2b, 0x89, 0x57, 0x48, 0xcb,
+	0x23, 0x7c, 0x05, 0x60, 0x72, 0x32, 0xc2, 0xa8, 0x10, 0xca, 0x15, 0x5a, 0x13, 0xe9, 0xd6, 0x85,
+	0x66, 0x85, 0x03, 0xcc, 0x1d, 0x5c, 0xc7, 0xcb, 0x81, 0x83, 0xa9, 0xf0, 0x6e, 0x81, 0x02, 0x3a,
+	0x01, 0x30, 0x3e, 0x16, 0x2b, 0xb4, 0x1e, 0x2a, 0x70, 0x36, 0xb1, 0x52, 0xfe, 0xdf, 0x83, 0xc2,
+	0x86, 0xcc, 0x6d, 0x64, 0x70, 0x2a, 0xb0, 0xa1, 0xff, 0x19, 0xf2, 0x2c, 0xbc, 0x06, 0x70, 0x61,
+	0xba, 0x17, 0xe8, 0x76, 0x28, 0xfd, 0x39, 0xf5, 0xb9, 0x84, 0x99, 0x1b, 0xdc, 0x8c, 0x8c, 0x57,
+	0x42, 0xcc, 0xd4, 0x6c, 0x8f, 0xde, 0xb3, 0xd4, 0x81, 0x31, 0x3f, 0xbe, 0x08, 0x9f, 0xe3, 0x63,
+	0xac, 0x2b, 0xd2, 0xda, 0x5f, 0x67, 0x84, 0xf0, 0x0a, 0x17, 0x4e, 0xe1, 0x64, 0x20, 0xec, 0x57,
+	0xc5, 0x53, 0x7b, 0x01, 0xe0, 0xfc, 0x44, 0x70, 0xd1, 0xcd, 0x50, 0xc6, 0xb0, 0xbe, 0x48, 0x85,
+	0x8b, 0x8c, 0x0a, 0x0f, 0x39, 0xee, 0x61, 0x15, 0xa7, 0x03, 0x0f, 0x26, 0x39, 0xaa, 0xd1, 0xd1,
+	0xdc, 0x16, 0x28, 0x94, 0xdf, 0x82, 0xef, 0x03, 0xf9, 0xbf, 0xd3, 0x81, 0x0c, 0x7e, 0x0e, 0x64,
+	0xf0, 0x6b, 0x20, 0x83, 0x93, 0xa1, 0x0c, 0xde, 0x0f, 0x65, 0xf0, 0x71, 0x28, 0x83, 0x4f, 0x43,
+	0x19, 0x7c, 0x1e, 0xca, 0xe0, 0xeb, 0x50, 0x06, 0xa7, 0x43, 0x19, 0xc0, 0x34, 0x65, 0x61, 0xfa,
+	0xe5, 0xf4, 0x54, 0xa5, 0x2c, 0x5a, 0xf5, 0xae, 0xaa, 0xe0, 0xc9, 0x2c, 0x9f, 0xe9, 0x97, 0xde,
+	0x45, 0xa2, 0xe5, 0x4a, 0xf5, 0x43, 0x24, 0x55, 0xf6, 0xd6, 0x2b, 0x7c, 0x9d, 0xcf, 0x28, 0x07,
+	0xa5, 0x2f, 0x3e, 0x7a, 0xc8, 0xd1, 0x43, 0x8e, 0x1e, 0x1e, 0x94, 0xea, 0x31, 0xbe, 0xba, 0xf9,
+	0x3b, 0x00, 0x00, 0xff, 0xff, 0x0e, 0x7f, 0xec, 0x59, 0x3a, 0x07, 0x00, 0x00,
 }
 
 func (this *PingResponse) VerboseEqual(that interface{}) error {
@@ -1035,6 +1147,132 @@ func (this *RecordResponse) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *NewIdentifierRequest) VerboseEqual(that interface{}) error {
+	if that == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that == nil && this != nil")
+	}
+
+	that1, ok := that.(*NewIdentifierRequest)
+	if !ok {
+		that2, ok := that.(NewIdentifierRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return fmt.Errorf("that is not of type *NewIdentifierRequest")
+		}
+	}
+	if that1 == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that is type *NewIdentifierRequest but is nil && this != nil")
+	} else if this == nil {
+		return fmt.Errorf("that is type *NewIdentifierRequest but is not nil && this == nil")
+	}
+	if this.Method != that1.Method {
+		return fmt.Errorf("Method this(%v) Not Equal that(%v)", this.Method, that1.Method)
+	}
+	if this.AutoPublish != that1.AutoPublish {
+		return fmt.Errorf("AutoPublish this(%v) Not Equal that(%v)", this.AutoPublish, that1.AutoPublish)
+	}
+	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
+		return fmt.Errorf("XXX_unrecognized this(%v) Not Equal that(%v)", this.XXX_unrecognized, that1.XXX_unrecognized)
+	}
+	return nil
+}
+func (this *NewIdentifierRequest) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*NewIdentifierRequest)
+	if !ok {
+		that2, ok := that.(NewIdentifierRequest)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Method != that1.Method {
+		return false
+	}
+	if this.AutoPublish != that1.AutoPublish {
+		return false
+	}
+	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
+		return false
+	}
+	return true
+}
+func (this *NewIdentifierResponse) VerboseEqual(that interface{}) error {
+	if that == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that == nil && this != nil")
+	}
+
+	that1, ok := that.(*NewIdentifierResponse)
+	if !ok {
+		that2, ok := that.(NewIdentifierResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return fmt.Errorf("that is not of type *NewIdentifierResponse")
+		}
+	}
+	if that1 == nil {
+		if this == nil {
+			return nil
+		}
+		return fmt.Errorf("that is type *NewIdentifierResponse but is nil && this != nil")
+	} else if this == nil {
+		return fmt.Errorf("that is type *NewIdentifierResponse but is not nil && this == nil")
+	}
+	if this.Document != that1.Document {
+		return fmt.Errorf("Document this(%v) Not Equal that(%v)", this.Document, that1.Document)
+	}
+	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
+		return fmt.Errorf("XXX_unrecognized this(%v) Not Equal that(%v)", this.XXX_unrecognized, that1.XXX_unrecognized)
+	}
+	return nil
+}
+func (this *NewIdentifierResponse) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*NewIdentifierResponse)
+	if !ok {
+		that2, ok := that.(NewIdentifierResponse)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Document != that1.Document {
+		return false
+	}
+	if !bytes.Equal(this.XXX_unrecognized, that1.XXX_unrecognized) {
+		return false
+	}
+	return true
+}
 func (this *PingResponse) GoString() string {
 	if this == nil {
 		return "nil"
@@ -1146,6 +1384,33 @@ func (this *RecordResponse) GoString() string {
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
+func (this *NewIdentifierRequest) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&protov1.NewIdentifierRequest{")
+	s = append(s, "Method: "+fmt.Sprintf("%#v", this.Method)+",\n")
+	s = append(s, "AutoPublish: "+fmt.Sprintf("%#v", this.AutoPublish)+",\n")
+	if this.XXX_unrecognized != nil {
+		s = append(s, "XXX_unrecognized:"+fmt.Sprintf("%#v", this.XXX_unrecognized)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *NewIdentifierResponse) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&protov1.NewIdentifierResponse{")
+	s = append(s, "Document: "+fmt.Sprintf("%#v", this.Document)+",\n")
+	if this.XXX_unrecognized != nil {
+		s = append(s, "XXX_unrecognized:"+fmt.Sprintf("%#v", this.XXX_unrecognized)+",\n")
+	}
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
 func valueToGoStringTrackingServerApi(v interface{}, typ string) string {
 	rv := reflect.ValueOf(v)
 	if rv.IsNil() {
@@ -1178,6 +1443,10 @@ type TrackingServerAPIClient interface {
 	// Process location record events. A maximum value of 100 record
 	// per-request is enforced.
 	Record(ctx context.Context, in *RecordRequest, opts ...grpc.CallOption) (*RecordResponse, error)
+	// Helper method to generate a new DID instances for clients that can't
+	// generate it locally. This is not recommended but supported for legacy
+	// and development purposes.
+	NewIdentifier(ctx context.Context, in *NewIdentifierRequest, opts ...grpc.CallOption) (*NewIdentifierResponse, error)
 }
 
 type trackingServerAPIClient struct {
@@ -1233,6 +1502,15 @@ func (c *trackingServerAPIClient) Record(ctx context.Context, in *RecordRequest,
 	return out, nil
 }
 
+func (c *trackingServerAPIClient) NewIdentifier(ctx context.Context, in *NewIdentifierRequest, opts ...grpc.CallOption) (*NewIdentifierResponse, error) {
+	out := new(NewIdentifierResponse)
+	err := c.cc.Invoke(ctx, "/bryk.covid.proto.v1.TrackingServerAPI/NewIdentifier", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TrackingServerAPIServer is the server API for TrackingServerAPI service.
 type TrackingServerAPIServer interface {
 	// Reachability test.
@@ -1246,6 +1524,10 @@ type TrackingServerAPIServer interface {
 	// Process location record events. A maximum value of 100 record
 	// per-request is enforced.
 	Record(context.Context, *RecordRequest) (*RecordResponse, error)
+	// Helper method to generate a new DID instances for clients that can't
+	// generate it locally. This is not recommended but supported for legacy
+	// and development purposes.
+	NewIdentifier(context.Context, *NewIdentifierRequest) (*NewIdentifierResponse, error)
 }
 
 // UnimplementedTrackingServerAPIServer can be embedded to have forward compatible implementations.
@@ -1266,6 +1548,9 @@ func (*UnimplementedTrackingServerAPIServer) RenewCredentials(ctx context.Contex
 }
 func (*UnimplementedTrackingServerAPIServer) Record(ctx context.Context, req *RecordRequest) (*RecordResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Record not implemented")
+}
+func (*UnimplementedTrackingServerAPIServer) NewIdentifier(ctx context.Context, req *NewIdentifierRequest) (*NewIdentifierResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method NewIdentifier not implemented")
 }
 
 func RegisterTrackingServerAPIServer(s *grpc.Server, srv TrackingServerAPIServer) {
@@ -1362,6 +1647,24 @@ func _TrackingServerAPI_Record_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TrackingServerAPI_NewIdentifier_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NewIdentifierRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TrackingServerAPIServer).NewIdentifier(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/bryk.covid.proto.v1.TrackingServerAPI/NewIdentifier",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TrackingServerAPIServer).NewIdentifier(ctx, req.(*NewIdentifierRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _TrackingServerAPI_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "bryk.covid.proto.v1.TrackingServerAPI",
 	HandlerType: (*TrackingServerAPIServer)(nil),
@@ -1385,6 +1688,10 @@ var _TrackingServerAPI_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Record",
 			Handler:    _TrackingServerAPI_Record_Handler,
+		},
+		{
+			MethodName: "NewIdentifier",
+			Handler:    _TrackingServerAPI_NewIdentifier_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -1711,6 +2018,84 @@ func (m *RecordResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *NewIdentifierRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NewIdentifierRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *NewIdentifierRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if m.AutoPublish {
+		i--
+		if m.AutoPublish {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i--
+		dAtA[i] = 0x10
+	}
+	if len(m.Method) > 0 {
+		i -= len(m.Method)
+		copy(dAtA[i:], m.Method)
+		i = encodeVarintTrackingServerApi(dAtA, i, uint64(len(m.Method)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *NewIdentifierResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *NewIdentifierResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *NewIdentifierResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
+	if len(m.Document) > 0 {
+		i -= len(m.Document)
+		copy(dAtA[i:], m.Document)
+		i = encodeVarintTrackingServerApi(dAtA, i, uint64(len(m.Document)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTrackingServerApi(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTrackingServerApi(v)
 	base := offset
@@ -1803,6 +2188,25 @@ func NewPopulatedRecordRequest(r randyTrackingServerApi, easy bool) *RecordReque
 func NewPopulatedRecordResponse(r randyTrackingServerApi, easy bool) *RecordResponse {
 	this := &RecordResponse{}
 	this.Ok = bool(bool(r.Intn(2) == 0))
+	if !easy && r.Intn(10) != 0 {
+		this.XXX_unrecognized = randUnrecognizedTrackingServerApi(r, 2)
+	}
+	return this
+}
+
+func NewPopulatedNewIdentifierRequest(r randyTrackingServerApi, easy bool) *NewIdentifierRequest {
+	this := &NewIdentifierRequest{}
+	this.Method = string(randStringTrackingServerApi(r))
+	this.AutoPublish = bool(bool(r.Intn(2) == 0))
+	if !easy && r.Intn(10) != 0 {
+		this.XXX_unrecognized = randUnrecognizedTrackingServerApi(r, 3)
+	}
+	return this
+}
+
+func NewPopulatedNewIdentifierResponse(r randyTrackingServerApi, easy bool) *NewIdentifierResponse {
+	this := &NewIdentifierResponse{}
+	this.Document = string(randStringTrackingServerApi(r))
 	if !easy && r.Intn(10) != 0 {
 		this.XXX_unrecognized = randUnrecognizedTrackingServerApi(r, 2)
 	}
@@ -2029,6 +2433,41 @@ func (m *RecordResponse) Size() (n int) {
 	return n
 }
 
+func (m *NewIdentifierRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Method)
+	if l > 0 {
+		n += 1 + l + sovTrackingServerApi(uint64(l))
+	}
+	if m.AutoPublish {
+		n += 2
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
+func (m *NewIdentifierResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Document)
+	if l > 0 {
+		n += 1 + l + sovTrackingServerApi(uint64(l))
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
+	}
+	return n
+}
+
 func sovTrackingServerApi(x uint64) (n int) {
 	return (math_bits.Len64(x|1) + 6) / 7
 }
@@ -2128,6 +2567,29 @@ func (this *RecordResponse) String() string {
 	}
 	s := strings.Join([]string{`&RecordResponse{`,
 		`Ok:` + fmt.Sprintf("%v", this.Ok) + `,`,
+		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *NewIdentifierRequest) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&NewIdentifierRequest{`,
+		`Method:` + fmt.Sprintf("%v", this.Method) + `,`,
+		`AutoPublish:` + fmt.Sprintf("%v", this.AutoPublish) + `,`,
+		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *NewIdentifierResponse) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&NewIdentifierResponse{`,
+		`Document:` + fmt.Sprintf("%v", this.Document) + `,`,
 		`XXX_unrecognized:` + fmt.Sprintf("%v", this.XXX_unrecognized) + `,`,
 		`}`,
 	}, "")
@@ -2944,6 +3406,198 @@ func (m *RecordResponse) Unmarshal(dAtA []byte) error {
 				}
 			}
 			m.Ok = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTrackingServerApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *NewIdentifierRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTrackingServerApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: NewIdentifierRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: NewIdentifierRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Method", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTrackingServerApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Method = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AutoPublish", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTrackingServerApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.AutoPublish = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTrackingServerApi(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			if (iNdEx + skippy) < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *NewIdentifierResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTrackingServerApi
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: NewIdentifierResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: NewIdentifierResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Document", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTrackingServerApi
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTrackingServerApi
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Document = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipTrackingServerApi(dAtA[iNdEx:])

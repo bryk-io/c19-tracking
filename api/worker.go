@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 
 	protov1 "go.bryk.io/covid-tracking/proto/v1"
@@ -96,6 +97,8 @@ func (w *Worker) handleTasks(deliveries <-chan amqp.Delivery) {
 		switch msg.Type {
 		case "ct19.location_record":
 			w.locationRecord(msg)
+		case "ct19.new_did":
+			w.publishDID(msg)
 		default:
 			w.log.WithFields(xlog.Fields{
 				"kind":         msg.Type,
@@ -154,6 +157,26 @@ func (w *Worker) locationRecord(msg amqp.Delivery) {
 		"did":       userDID.(string),
 		"timestamp": msg.Timestamp.Unix(),
 	}).Info("location record processed")
+}
+
+// Publish a new DID instance.
+func (w *Worker) publishDID(msg amqp.Delivery) {
+	defer func() {
+		_ = msg.Ack(false)
+	}()
+
+	// Decode DID document
+	doc := did.Document{}
+	if err := json.Unmarshal(msg.Body, &doc); err != nil {
+		w.log.Warning("invalid message contents")
+	}
+	id, err := did.FromDocument(&doc)
+	if err != nil {
+		w.log.Warning("invalid message contents")
+	}
+
+	// Submit publish request
+	go publishDID(id, 18, w.log)
 }
 
 // Internal event processing

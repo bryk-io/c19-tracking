@@ -21,6 +21,9 @@ vendor/**
 !**/testdata/*.cer
 !**/testdata/*.pem
 
+# Secret files
+*secret*
+
 # Artifacts
 /release/**
 /covid-tracking*
